@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f6f2">
+    <meta
+      name="description"
+      content="Tìm kiếm thông tin trên web với Tìm Nhanh."
+    >
+    <title>Tìm Nhanh — Tìm kiếm trên web</title>
+    <link rel="stylesheet" href="./styles.css?v=20261110-3">
+    <script src="./app.js?v=20261110-3" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="Tìm Nhanh - Trang chủ">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <circle cx="13.5" cy="13.5" r="8.5" stroke="currentColor" stroke-width="3.5"/>
+            <path d="m20 20 7 7" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M8.5 13.5a5 5 0 0 1 5-5" stroke="#9D93FF" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">Tìm Nhanh</span>
+      </a>
+      <a class="topbar-link" href="https://www.google.com" target="_blank" rel="noopener noreferrer">
+        <span class="topbar-caption">Được hỗ trợ bởi Google</span>
+        <span class="topbar-arrow" aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-kicker"><span class="kicker-dot"></span> KHÔNG GIAN TÌM KIẾM CỦA BẠN</div>
+        <div class="hero-brand" aria-hidden="true">
+          <span class="hero-mark">
+            <svg viewBox="0 0 48 48" fill="none">
+              <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="4.5"/>
+              <path d="m29 29 10 10" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
+              <path d="M13.5 20a6.5 6.5 0 0 1 6.5-6.5" stroke="#9D93FF" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>Tìm <span class="word-accent">Nhanh</span></span>
+        </div>
+        <h1 id="page-title">Điều bạn muốn biết,<br><span>chỉ cách một lần tìm.</span></h1>
+        <p class="intro">Một câu hỏi nhỏ có thể mở ra cả thế giới thông tin.</p>
+
+        <form class="search-form" id="search-form" action="https://www.google.com/search" method="get" role="search">
+          <label class="sr-only" for="search-input">Từ khóa tìm kiếm</label>
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input
+            id="search-input"
+            name="q"
+            type="search"
+            maxlength="300"
+            placeholder="Bạn đang tò mò điều gì?"
+            autocomplete="off"
+            required
+          >
+          <button class="clear-button" id="clear-button" type="button" aria-label="Xóa từ khóa" hidden>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <span class="search-divider" aria-hidden="true"></span>
+          <button class="submit-button" type="submit" aria-label="Tìm kiếm">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
+              <path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </form>
+
+        <div class="landing-actions">
+          <button class="primary-action" type="submit" form="search-form">Tìm trên Google</button>
+          <span class="action-note">hoặc nhấn <kbd>Enter</kbd></span>
+        </div>
+        <div class="suggestions" aria-label="Gợi ý tìm kiếm">
+          <span class="suggestions-label">Thử tìm</span>
+          <button type="button" class="suggestion" data-query="Tin tức hôm nay">Tin tức hôm nay</button>
+          <button type="button" class="suggestion" data-query="Thời tiết Hà Nội">Thời tiết Hà Nội</button>
+          <button type="button" class="suggestion" data-query="Địa điểm du lịch đẹp">Địa điểm du lịch đẹp</button>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <span>Tìm Nhanh</span>
+      <span class="footer-divider" aria-hidden="true"></span>
+      <span>Tìm kiếm trực tiếp trên Google</span>
+    </footer>
+  </body>
+</html>
