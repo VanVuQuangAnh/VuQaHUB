@@ -1,0 +1,2348 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#72c9f8">
+  <title>Văn chương phiêu lưu ký — Kết nối tri thức</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17314b;
+      --muted: #58738b;
+      --blue: #168bd0;
+      --deep-blue: #1766a8;
+      --gold: #ffc94f;
+      --cream: #fffaf0;
+      --green: #64b879;
+    }
+
+    * {
+      box-sizing: border-box;
+      cursor: default;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background: #79cefb;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+    button { font: inherit; cursor: pointer; }
+    a[href] { cursor: pointer; }
+    button *, a[href] * { cursor: inherit; }
+    input, textarea, [contenteditable="true"] {
+      cursor: text;
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    .sky {
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(ellipse at 16% 11%, rgba(255,255,255,.62) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 83% 23%, rgba(255,255,255,.72) 0 1px, transparent 2px),
+        linear-gradient(180deg, #51b7f4 0%, #a9e2ff 58%, #e0f6ff 100%);
+      background-size: 80px 80px, 117px 117px, auto;
+    }
+
+    .sky::before, .sky::after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      width: 360px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.62);
+      filter: blur(1px);
+      box-shadow: 60px -22px 0 -12px rgba(255,255,255,.72), 128px 7px 0 -8px rgba(255,255,255,.65);
+      pointer-events: none;
+    }
+    .sky::before { top: 260px; left: -150px; }
+    .sky::after { top: 780px; right: -200px; transform: scale(1.3); }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 70px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 18px;
+      border: 1px solid rgba(255,255,255,.78);
+      border-radius: 22px;
+      background: rgba(255,255,255,.77);
+      box-shadow: 0 8px 24px rgba(31, 111, 157, .13);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 45px;
+      height: 45px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 15px;
+      color: #fff;
+      background: linear-gradient(145deg, #ffca57, #ff9a43);
+      font-size: 24px;
+      box-shadow: inset 0 2px 0 rgba(255,255,255,.45), 0 4px 10px rgba(191,111,39,.2);
+    }
+
+    .brand-title { margin: 0; font-size: 17px; font-weight: 900; letter-spacing: -.3px; }
+    .brand-subtitle { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+
+    .stats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 13px;
+      border-radius: 14px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .intro {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin: 36px 5px 25px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #075e9d;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 680px;
+      margin: 0;
+      color: #123553;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.04;
+      letter-spacing: -1.5px;
+      text-shadow: 0 2px 0 rgba(255,255,255,.55);
+    }
+
+    .intro-copy {
+      max-width: 590px;
+      margin: 13px 0 0;
+      color: #285671;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .progress-card {
+      min-width: 170px;
+      padding: 15px 17px;
+      border: 1px solid rgba(255,255,255,.85);
+      border-radius: 18px;
+      background: rgba(255,255,255,.73);
+      box-shadow: 0 7px 18px rgba(31,111,157,.1);
+    }
+
+    .intro-side {
+      display: flex;
+      flex: 0 0 190px;
+      flex-direction: column;
+      align-self: stretch;
+      gap: 12px;
+      width: 190px;
+    }
+    .tai-xiu-card {
+      display: flex;
+      flex: 1;
+      min-height: 100px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 14px 15px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 18px;
+      color: #173a56;
+      background: linear-gradient(145deg, rgba(255,255,255,.94), rgba(226,246,255,.86));
+      box-shadow: 0 7px 18px rgba(31,111,157,.13);
+      cursor: pointer;
+      text-align: left;
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .tai-xiu-card:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(31,111,157,.2); }
+    .tai-xiu-card:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+    .tai-xiu-card strong { display: block; font-size: 15px; }
+    .tai-xiu-card small { display: block; margin-top: 4px; color: #537287; font-size: 11px; line-height: 1.35; }
+    .tai-xiu-cta { color: #0876b5; font-size: 12px; font-weight: 900; }
+    .progress-card strong { display: block; font-size: 20px; }
+    .progress-card span { color: var(--muted); font-size: 12px; }
+    .progress-track {
+      height: 8px;
+      margin-top: 11px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: #dcecf4;
+    }
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #56c987, #b6dc56);
+      transition: width .3s ease;
+    }
+
+    .map {
+      position: relative;
+      isolation: isolate;
+      padding: 24px clamp(15px, 4vw, 48px) 45px;
+      border: 1px solid rgba(255,255,255,.6);
+      border-radius: 32px;
+      background:
+        radial-gradient(ellipse at 50% 0, rgba(255,255,255,.49), transparent 49%),
+        linear-gradient(180deg, rgba(199,239,255,.56), rgba(116,204,245,.47));
+      box-shadow: 0 18px 45px rgba(20,103,153,.13), inset 0 1px 0 rgba(255,255,255,.55);
+    }
+
+    .map::before, .map::after {
+      content: "✦";
+      position: absolute;
+      z-index: -1;
+      color: rgba(255,255,255,.78);
+      font-size: 24px;
+      text-shadow: 0 0 18px rgba(255,255,255,.8);
+    }
+    .map::before { top: 9%; right: 12%; }
+    .map::after { top: 47%; left: 8%; font-size: 17px; }
+
+    .zone { position: relative; padding-top: 17px; }
+    .zone + .zone { margin-top: 35px; }
+
+    .zone-heading {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      width: fit-content;
+      margin: 0 0 20px;
+      padding: 9px 15px 9px 10px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 16px;
+      background: rgba(255,255,255,.86);
+      box-shadow: 0 5px 12px rgba(32,112,150,.1);
+    }
+    .zone-number {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 11px;
+      color: white;
+      background: linear-gradient(145deg, #ffbd4b, #ff8e52);
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .zone-heading h2 { margin: 0; font-size: 15px; }
+    .zone-heading p { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+
+    .island-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(9px, 2.4vw, 30px);
+      align-items: end;
+    }
+
+    .island-wrap {
+      display: flex;
+      justify-content: center;
+      min-width: 0;
+    }
+    .island-wrap:nth-child(3n + 2) { transform: translateY(28px); }
+    .island-wrap:nth-child(3n) { transform: translateY(4px); }
+
+    .island {
+      position: relative;
+      width: 100%;
+      max-width: 260px;
+      min-height: 258px;
+      padding: 0 10px 24px;
+      border: 0;
+      color: var(--ink);
+      background: none;
+      cursor: pointer;
+      text-align: center;
+      transition: transform .18s ease, filter .18s ease;
+    }
+    .island:hover:not(:disabled) { transform: translateY(-7px) scale(1.02); }
+    .island:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 20px; }
+    .island:disabled { cursor: not-allowed; }
+
+    .portrait-frame {
+      position: relative;
+      z-index: 2;
+      display: block;
+      width: clamp(92px, 11vw, 122px);
+      height: clamp(92px, 11vw, 122px);
+      margin: 0 auto -8px;
+      padding: 5px;
+      border: 4px solid #fff9e7;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #fff4bb, #ffb54a);
+      box-shadow: 0 7px 0 rgba(73,119,96,.18), 0 10px 23px rgba(21,83,115,.22);
+      transition: filter .2s ease;
+    }
+    .portrait {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 50%;
+      background: #d9e8e8;
+      object-fit: cover;
+    }
+    .portrait-fallback {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background:
+        radial-gradient(ellipse at 50% 33%, #f1c49d 0 18%, transparent 19%),
+        radial-gradient(ellipse at 50% 92%, #264767 0 32%, transparent 33%),
+        linear-gradient(140deg, #80c4cc, #508bb2);
+      font-family: Georgia, serif;
+      font-size: 20px;
+      font-weight: 900;
+      text-shadow: 0 1px 4px rgba(0,0,0,.4);
+    }
+    .island.locked .portrait-frame { filter: grayscale(.82) brightness(.77); }
+
+    .island-land {
+      position: relative;
+      display: block;
+      min-height: 143px;
+      padding: 16px 13px 18px;
+      border: 3px solid rgba(255,255,255,.8);
+      border-radius: 46% 46% 22% 22% / 25% 25% 18% 18%;
+      background:
+        radial-gradient(ellipse at 50% -2%, #b8ed84 0 15%, transparent 16%),
+        radial-gradient(ellipse at 22% 8%, #64bf70 0 13%, transparent 14%),
+        radial-gradient(ellipse at 76% 10%, #63bd77 0 13%, transparent 14%),
+        linear-gradient(180deg, #eac765 0 22%, #a96d4c 23% 60%, #77513f 61% 100%);
+      box-shadow: 0 9px 0 #408da7, 0 14px 0 rgba(39,112,146,.33), inset 0 6px 0 rgba(255,255,255,.38);
+    }
+    .island-land::before {
+      content: "";
+      position: absolute;
+      top: -17px;
+      left: 50%;
+      width: 75%;
+      height: 25px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #80cf80, #50ab6a);
+      transform: translateX(-50%);
+      box-shadow: 0 3px 2px rgba(42,112,68,.19);
+    }
+    .level-label {
+      position: relative;
+      display: inline-block;
+      z-index: 1;
+      max-width: 100%;
+      padding: 4px 10px;
+      border: 2px solid rgba(255,255,255,.9);
+      border-radius: 8px;
+      color: #fff;
+      background: linear-gradient(180deg, #35a8ee, #176fbe);
+      box-shadow: 0 3px 0 #11558f, 0 4px 7px rgba(0,0,0,.18);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+    .author-name {
+      display: block;
+      position: relative;
+      z-index: 1;
+      margin-top: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1.18;
+      text-shadow: 0 2px 3px rgba(43,49,35,.47);
+    }
+    .author-work {
+      display: block;
+      position: relative;
+      z-index: 1;
+      margin-top: 5px;
+      color: #fff8dc;
+      font-size: 10px;
+      line-height: 1.3;
+      text-shadow: 0 1px 3px rgba(43,49,35,.55);
+    }
+    .lock-badge {
+      position: absolute;
+      z-index: 3;
+      right: 12%;
+      bottom: 10px;
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      border: 3px solid #fff;
+      border-radius: 11px;
+      color: #fff;
+      background: linear-gradient(145deg, #85a0ac, #557180);
+      box-shadow: 0 3px 0 rgba(33,75,92,.42);
+      font-size: 15px;
+    }
+    .island.completed .level-label {
+      background: linear-gradient(180deg, #5fc67f, #31965b);
+      box-shadow: 0 3px 0 #237546, 0 4px 7px rgba(0,0,0,.18);
+    }
+    .question-stars {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 7px;
+      color: #ffcf38;
+      font-size: 14px;
+      text-shadow: 0 2px 1px rgba(96,76,15,.45);
+    }
+    .question-stars span { opacity: .35; }
+    .question-stars span.earned { opacity: 1; }
+    .author-score {
+      display: block;
+      position: relative;
+      z-index: 1;
+      margin-top: 6px;
+      color: #fff3ae;
+      font-size: 10px;
+      font-weight: 900;
+      text-shadow: 0 1px 3px rgba(43,49,35,.55);
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px 22px;
+      margin: 42px 0 4px;
+      color: #275b73;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .legend span { display: inline-flex; align-items: center; gap: 7px; }
+    .legend i { font-style: normal; font-size: 16px; }
+
+    .footer-note {
+      margin: 23px 0 0;
+      color: #3a6e83;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      padding: 22px;
+      background: rgba(17, 47, 69, .58);
+      backdrop-filter: blur(7px);
+    }
+    .modal-backdrop.open { display: flex; }
+    .quiz {
+      position: relative;
+      width: min(570px, 100%);
+      padding: clamp(22px, 5vw, 36px);
+      border: 1px solid rgba(255,255,255,.94);
+      border-radius: 28px;
+      background: #fffdf6;
+      box-shadow: 0 24px 70px rgba(4,39,65,.35);
+      animation: pop-in .2s ease-out;
+    }
+    @keyframes pop-in {
+      from { opacity: 0; transform: translateY(10px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .close {
+      position: absolute;
+      top: 13px;
+      right: 13px;
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      color: #607989;
+      background: #edf4f5;
+      cursor: pointer;
+      font-size: 21px;
+    }
+    .quiz-kicker { margin: 0 0 7px; color: #1685be; font-size: 11px; font-weight: 900; letter-spacing: 1.2px; text-transform: uppercase; }
+    .quiz h2 { margin: 0; padding-right: 32px; font-family: Georgia, serif; font-size: clamp(24px, 4vw, 31px); line-height: 1.15; }
+    .quiz-work { margin: 7px 0 19px; color: var(--muted); font-size: 13px; }
+    .question-progress { display: flex; justify-content: space-between; margin-bottom: 8px; color: #6b8190; font-size: 12px; font-weight: 800; }
+    .question-track { height: 7px; margin-bottom: 20px; overflow: hidden; border-radius: 10px; background: #e8eff2; }
+    .question-track div { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #47b8eb, #5fc888); transition: width .25s ease; }
+    .question-text { margin: 0 0 15px; font-size: 17px; font-weight: 800; line-height: 1.45; }
+    .answers { display: grid; gap: 9px; }
+    .answer {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      width: 100%;
+      padding: 12px 13px;
+      border: 2px solid #e4edf0;
+      border-radius: 14px;
+      color: #29455a;
+      background: white;
+      cursor: pointer;
+      text-align: left;
+      transition: .15s ease;
+    }
+    .answer:hover:not(:disabled) { border-color: #7ec9e8; background: #f3fbff; }
+    .answer:focus-visible { outline: 3px solid #78c8e8; outline-offset: 2px; }
+    .answer:disabled { cursor: default; }
+    .answer-letter {
+      display: grid;
+      width: 27px;
+      height: 27px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 9px;
+      color: #4b7f9b;
+      background: #eff7fa;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .answer.correct { border-color: #70c68d; background: #f0fff4; }
+    .answer.correct .answer-letter { color: white; background: #51af70; }
+    .answer.wrong { border-color: #efa29a; background: #fff5f3; }
+    .answer.wrong .answer-letter { color: white; background: #df796d; }
+    .feedback { min-height: 25px; margin: 12px 0 0; color: #5b7788; font-size: 13px; line-height: 1.4; }
+    .feedback.good { color: #267c48; font-weight: 800; }
+    .feedback.bad { color: #bc534c; font-weight: 800; }
+    .quiz-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 10px; }
+    .primary, .secondary {
+      min-height: 44px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 13px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+    .primary { color: white; background: linear-gradient(180deg, #29a7e4, #1478bf); box-shadow: 0 4px 0 #105d98; }
+    .primary:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+    .secondary { color: #426277; background: #eaf3f6; }
+    .game-rules { margin: 10px 0 18px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .dice-balance { margin: 0 0 16px; padding: 12px 14px; border-radius: 14px; color: #694b0c; background: #fff3c8; font-weight: 900; }
+    .shop-open {
+      position: absolute;
+      top: 13px;
+      left: 13px;
+      display: flex;
+      min-width: 154px;
+      height: 46px;
+      align-items: center;
+      gap: 9px;
+      padding: 0 12px;
+      border: 2px solid #fff2bd;
+      border-radius: 15px;
+      color: #603d03;
+      background: linear-gradient(145deg, #ffe27a, #ffbd38);
+      box-shadow: 0 4px 0 #c58218, 0 7px 14px rgba(140,91,9,.2);
+      cursor: pointer;
+      text-align: left;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .shop-open:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #c58218, 0 9px 16px rgba(140,91,9,.24); }
+    .shop-open:focus-visible, .shop-back:focus-visible { outline: 3px solid #78c8e8; outline-offset: 2px; }
+    .shop-open-icon { font-size: 22px; }
+    .shop-open-copy { display: flex; flex-direction: column; gap: 2px; line-height: 1.05; }
+    .shop-open-copy strong { font-size: 12px; letter-spacing: .3px; }
+    .shop-open-copy small { color: #79550e; font-size: 10px; font-weight: 700; }
+    .shop-back {
+      position: absolute;
+      top: 13px;
+      left: 13px;
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      color: #77530b;
+      background: #fff0be;
+      cursor: pointer;
+      font-size: 19px;
+    }
+    .shop-back:hover { background: #ffe28a; }
+    .game-content { padding-top: 40px; }
+    .shop-balance {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 1px solid #f0d17a;
+      background: linear-gradient(110deg, #fff5c9, #ffe58f);
+    }
+    .shop-balance strong { color: #704b03; font-size: 24px; }
+    .shop-balance strong span { font-size: 30px; }
+    .shop-balance strong small { margin-left: 4px; font-size: 13px; }
+    .shop-items { display: grid; grid-template-columns: 1fr; gap: 11px; }
+    .shop-item {
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 13px;
+      padding: 13px;
+      border: 2px solid #f0d17a;
+      border-radius: 18px;
+      background: linear-gradient(110deg, #fffdf5, #fff7dc);
+      box-shadow: 0 4px 0 rgba(198,151,35,.12);
+    }
+    .shop-gift-icon {
+      display: grid;
+      width: 52px;
+      height: 52px;
+      place-items: center;
+      border-radius: 15px;
+      background: #ffedb2;
+      font-size: 29px;
+    }
+    .shop-item-details { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
+    .shop-item h3 { margin: 0; color: #76550c; font-size: 16px; }
+    .shop-item p { margin: 0; color: #806b36; font-size: 12px; }
+    .shop-price { display: flex; align-items: baseline; gap: 5px; margin: 2px 0 !important; color: #8a5a00 !important; }
+    .shop-price strong { font-size: 25px; line-height: 1; }
+    .shop-price span { font-size: 12px; font-weight: 900; }
+    .shop-item .shop-status { margin-top: 4px; font-size: 11px; font-weight: 800; }
+    .shop-status.ready { color: #27804c !important; }
+    .shop-status.short { color: #a35318 !important; }
+    .shop-redemptions { color: #647d8b !important; }
+    .shop-item .primary { min-width: 126px; padding: 0 12px; white-space: nowrap; }
+    .bet-label { display: block; margin-bottom: 7px; color: #3d5c70; font-size: 13px; font-weight: 800; }
+    .bet-input {
+      width: 100%;
+      min-height: 46px;
+      margin-bottom: 13px;
+      padding: 0 13px;
+      border: 2px solid #dfeaf0;
+      border-radius: 13px;
+      color: var(--ink);
+      background: white;
+      font: inherit;
+      font-weight: 800;
+    }
+    .bet-input:focus-visible { outline: 3px solid #78c8e8; outline-offset: 2px; }
+    .dice-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .dice-choice {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      min-height: 56px;
+      border: 2px solid #dbeaf0;
+      border-radius: 15px;
+      color: #24536e;
+      background: #f5fbfd;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 900;
+    }
+    .dice-choice small { color: #638093; font-size: 11px; font-weight: 800; }
+    .dice-choice:hover:not(:disabled) { border-color: #78c8e8; background: #eaf8ff; }
+    .dice-choice:disabled { cursor: not-allowed; opacity: .55; }
+    .dice-stage {
+      position: relative;
+      height: 178px;
+      margin: 14px 0 7px;
+      overflow: visible;
+      border: 2px solid #8fb68c;
+      border-radius: 20px;
+      background: radial-gradient(ellipse at 50% 35%, #c4dfb8, #8fb98a);
+      box-shadow: inset 0 4px 10px rgba(34,83,44,.16);
+    }
+    .dice-tray {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      grid-template: repeat(2, 58px) / repeat(2, 58px);
+      gap: 3px 5px;
+      transform: translate(-50%, -50%);
+    }
+    .dice-tray .die:first-child { grid-column: 1 / span 2; grid-row: 1; justify-self: center; }
+    .dice-tray .die:nth-child(2) { grid-column: 1; grid-row: 2; }
+    .dice-tray .die:nth-child(3) { grid-column: 2; grid-row: 2; }
+    .die {
+      display: grid;
+      width: 58px;
+      height: 58px;
+      grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+      gap: 2px;
+      padding: 8px;
+      border: 2px solid #dce8ed;
+      border-radius: 14px;
+      color: #174b69;
+      background: linear-gradient(145deg, #fff, #eef7fa);
+      box-shadow: 0 6px 0 #afc4ca, 0 8px 14px rgba(37,87,111,.18);
+      transform-style: preserve-3d;
+    }
+    .die-unknown {
+      display: grid;
+      place-items: center;
+      color: #75909a;
+      font-size: 26px;
+      font-weight: 900;
+    }
+    .die-pip {
+      width: 9px;
+      height: 9px;
+      align-self: center;
+      justify-self: center;
+      border-radius: 50%;
+      background: transparent;
+    }
+    .die-pip.active { background: #174b69; box-shadow: inset 0 1px 1px rgba(255,255,255,.45); }
+    .dice-tray.rolling .die { animation: dice-toss 1s cubic-bezier(.2,.7,.25,1) .8s both; }
+    .dice-tray.rolling .die:nth-child(2) { animation-delay: .88s; }
+    .dice-tray.rolling .die:nth-child(3) { animation-delay: .96s; }
+    @keyframes dice-toss {
+      0% { opacity: .35; transform: translateY(24px) rotate(-35deg) scale(.72); }
+      35% { opacity: 1; transform: translateY(-58px) rotate(155deg) scale(1.12); }
+      68% { transform: translateY(-36px) rotate(290deg) scale(1.08); }
+      86% { transform: translateY(5px) rotate(345deg) scale(.96); }
+      100% { transform: translateY(0) rotate(360deg) scale(1); }
+    }
+    .dice-cover {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 50%;
+      width: 154px;
+      height: 154px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      transform: translate(calc(-50% + var(--drag-x, 0px)), calc(-50% + var(--drag-y, 0px)));
+      will-change: transform;
+    }
+    .dice-cover:disabled { cursor: wait; }
+    .dice-cover:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
+    .dice-bowl {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+    .dice-cover.dragging { cursor: grabbing; }
+    .dice-stage.rolling .dice-cover .dice-bowl { animation: bowl-cover .3s ease-out both; }
+    @keyframes bowl-cover {
+      from { opacity: .35; transform: scale(.82); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .dice-total { margin: 0 0 12px; color: #355a6f; font-size: 13px; font-weight: 900; text-align: center; }
+    .finish {
+      padding: 15px 0 2px;
+      text-align: center;
+    }
+    .finish-icon { display: grid; width: 78px; height: 78px; margin: 0 auto 15px; place-items: center; border-radius: 25px; background: #fff1bd; font-size: 42px; }
+    .finish h2 { padding: 0; }
+    .finish p { margin: 11px auto 20px; max-width: 400px; color: var(--muted); line-height: 1.55; }
+    .reward-card {
+      margin: 14px auto 18px;
+      padding: 14px 16px;
+      border: 1px solid #f0d17a;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #fff8d8, #fff0b5);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+    }
+    .reward-card h3 { margin: 0; color: #80600c; font-size: 15px; }
+    .reward-stars { display: flex; justify-content: center; gap: 5px; margin: 8px 0; color: #c99c24; font-size: 22px; }
+    .reward-stars span { opacity: .3; }
+    .reward-stars span.earned { opacity: 1; }
+    .reward-points { display: block; color: #79530a; font-size: 20px; }
+    .reward-card p { margin: 6px auto 0; color: #725e2a; font-size: 12px; line-height: 1.4; }
+    .score-summary {
+      max-height: 170px;
+      margin: 0 auto 18px;
+      overflow: auto;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: #f0f7f8;
+      text-align: left;
+    }
+    .score-summary h3 { margin: 0 0 8px; color: #315d72; font-size: 13px; }
+    .score-summary ul { display: grid; gap: 5px; margin: 0; padding: 0; list-style: none; }
+    .score-summary li { display: flex; justify-content: space-between; gap: 12px; color: #496777; font-size: 12px; }
+    .score-summary li strong { color: #216f92; white-space: nowrap; }
+    .photo-attribution { margin: 8px 0 3px; color: #3a6e83; font-size: 10px; line-height: 1.5; text-align: center; }
+    .photo-attribution a { color: #185d82; }
+    .toast {
+      position: fixed;
+      z-index: 20;
+      left: 50%;
+      bottom: 24px;
+      max-width: calc(100vw - 28px);
+      padding: 12px 18px;
+      border: 1px solid rgba(255,255,255,.82);
+      border-radius: 14px;
+      color: white;
+      background: #183d59;
+      box-shadow: 0 8px 25px rgba(18,53,78,.28);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 10px);
+      transition: .2s ease;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    .coin-bank {
+      position: fixed;
+      z-index: 11;
+      bottom: 18px;
+      left: 18px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 15px;
+      border: 2px solid rgba(255,255,255,.9);
+      border-radius: 16px;
+      color: #65420b;
+      background: linear-gradient(145deg, #fff4bd, #ffd45e);
+      box-shadow: 0 5px 16px rgba(67,79,34,.24), inset 0 1px 0 rgba(255,255,255,.8);
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .coin-bank-icon { font-size: 21px; }
+    .coin-bank-count { font-size: 17px; }
+
+    @media (max-width: 650px) {
+      .page { width: min(100% - 20px, 500px); padding-top: 11px; }
+      .topbar { padding: 9px 11px; border-radius: 17px; }
+      .brand-mark { width: 39px; height: 39px; border-radius: 13px; }
+      .brand-title { font-size: 14px; }
+      .brand-subtitle { font-size: 10px; }
+      .stats { gap: 6px; }
+      .stat { gap: 4px; padding: 8px; font-size: 11px; }
+      .intro { align-items: start; margin: 27px 2px 18px; }
+      .intro-copy { font-size: 13px; }
+      .intro-side { flex-basis: 145px; width: 145px; }
+      .tai-xiu-card { padding: 12px; }
+      .tai-xiu-card strong { font-size: 13px; }
+      .tai-xiu-card small { font-size: 10px; }
+      .progress-card { min-width: 102px; padding: 11px; }
+      .progress-card strong { font-size: 17px; }
+      .progress-card span { font-size: 10px; }
+      .map { padding: 16px 7px 28px; border-radius: 22px; }
+      .zone + .zone { margin-top: 24px; }
+      .zone-heading { margin-left: 7px; }
+      .island-row { gap: 2px; }
+      .island { min-height: 205px; padding: 0 3px 19px; }
+      .island-wrap:nth-child(3n + 2) { transform: translateY(17px); }
+      .island-wrap:nth-child(3n) { transform: translateY(2px); }
+      .portrait-frame { width: 80px; height: 80px; border-width: 3px; margin-bottom: -4px; }
+      .island-land { min-height: 120px; padding: 12px 7px 15px; border-width: 2px; }
+      .level-label { padding: 3px 6px; border-width: 1px; font-size: 8px; }
+      .author-name { margin-top: 7px; font-size: 11px; }
+      .author-work { font-size: 8px; }
+      .lock-badge { right: 6%; bottom: 8px; width: 27px; height: 27px; border-width: 2px; border-radius: 8px; font-size: 12px; }
+      .legend { margin-top: 30px; font-size: 10px; }
+      .coin-bank { bottom: 10px; left: 10px; padding: 8px 11px; border-radius: 13px; font-size: 11px; }
+      .coin-bank-icon { font-size: 18px; }
+      .coin-bank-count { font-size: 15px; }
+    }
+    @media (max-width: 390px) {
+      .brand-subtitle { display: none; }
+      .stats .stat:last-child { display: none; }
+      .intro { display: block; }
+      .intro-side { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); width: auto; margin-top: 12px; }
+      .tai-xiu-card { min-height: 100px; }
+      .progress-card { display: flex; align-items: center; gap: 9px; margin-top: 0; }
+      .progress-card .progress-track { flex: 1; margin-top: 0; }
+      .progress-card > div:first-child { white-space: nowrap; }
+      .shop-item { grid-template-columns: 44px minmax(0, 1fr); gap: 10px; padding: 11px; }
+      .shop-gift-icon { width: 44px; height: 44px; border-radius: 13px; font-size: 24px; }
+      .shop-item .primary { grid-column: 1 / -1; width: 100%; }
+      .dice-tray { grid-template: repeat(2, 51px) / repeat(2, 51px); gap: 3px; }
+      .die { width: 51px; height: 51px; padding: 6px; }
+      .die-pip { width: 8px; height: 8px; }
+      .dice-cover { width: 140px; height: 140px; }
+      .island { min-height: 194px; }
+      .portrait-frame { width: 70px; height: 70px; }
+      .author-name { font-size: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="sky">
+    <div class="page">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">✒</div>
+          <div>
+            <p class="brand-title">VĂN CHƯƠNG PHIÊU LƯU KÝ</p>
+            <p class="brand-subtitle">Hành trình khám phá Ngữ văn 12 · Kết nối tri thức</p>
+          </div>
+        </div>
+        <div class="stats" aria-label="Thành tích">
+          <div class="stat"><span aria-hidden="true">✅</span><span id="score-count">0</span>/<span id="score-total">85</span> câu đúng</div>
+          <div class="stat"><span aria-hidden="true">🗺️</span><span id="unlocked-count">1</span>/<span id="total-count">17</span> mở khóa</div>
+        </div>
+      </header>
+
+      <section class="intro">
+        <div>
+          <p class="eyebrow">Bản đồ học kì I · Tập 1</p>
+          <h1>Vượt đảo, gặp gỡ<br>những trang văn hay</h1>
+          <p class="intro-copy">Mỗi hòn đảo là một tác giả trong sách với kho 20 câu hỏi. Mỗi lượt làm 5 câu ngẫu nhiên; chỉ 5 câu của lượt đầu tiên ở mỗi màn được tính điểm. Em vẫn có thể làm lại màn để luyện tập và cải thiện số sao.</p>
+        </div>
+        <aside class="intro-side">
+          <button class="tai-xiu-card" id="open-tai-xiu" type="button" aria-label="Mở mẹo kiếm thêm điểm">
+            <span>
+              <strong>🎲 Mẹo kiếm thêm điểm</strong>
+            </span>
+            <span class="tai-xiu-cta">Chơi ngay →</span>
+          </button>
+          <div class="progress-card" aria-label="Tiến độ hoàn thành">
+            <div><strong><span id="complete-count">0</span>/17</strong><span> tác giả đã gặp</span></div>
+            <div class="progress-track"><div class="progress-fill" id="overall-progress"></div></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="map" id="map" aria-label="Bản đồ các màn chơi"></section>
+      <p class="footer-note">Tiến độ được lưu trên thiết bị này. Hãy hoàn thành màn trước để mở khóa màn tiếp theo.</p>
+      <p class="photo-attribution" id="photo-attribution"></p>
+    </div>
+  </main>
+
+  <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="quiz-title">
+    <section class="quiz" id="quiz-panel"></section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="coin-bank" role="status" aria-live="polite" aria-label="Kho điểm">
+    <span class="coin-bank-icon" aria-hidden="true">🪙</span>
+    <span>Kho điểm:</span>
+    <span class="coin-bank-count" id="coin-count">0</span>
+  </div>
+  <script>
+    const portrait = {
+      "Vũ Trọng Phụng": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Vu_Trong_Phung.jpg",
+      "Yann Martel": "https://upload.wikimedia.org/wikipedia/commons/9/97/Yann_martel_2007-10-25_Seattle_WA_USA.jpg",
+      "Rabindranath Tagore": "https://upload.wikimedia.org/wikipedia/commons/8/80/Rabindranath_Tagore_unknown_location.jpg",
+      "Nikolai Gogol": "https://upload.wikimedia.org/wikipedia/commons/b/b2/N.Gogol_by_F.Moller_%281840%2C_Tretyakov_gallery%29.jpg",
+      "Thanh Thảo": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Poet_Thanh_Thao.JPG",
+      "Bô-mác-se (Beaumarchais)": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Pierre-Augustin_Caron_de_Beaumarchais_par_Jean-Marc_Nattier.jpg/500px-Pierre-Augustin_Caron_de_Beaumarchais_par_Jean-Marc_Nattier.jpg",
+      "Bảo Ninh": "Bao-ninh.jpeg",
+      "Đặng Dung": "Dang-dung.jpg",
+      "Quang Dũng": "quang-dung.jpg",
+      "Trần Đình Hượu": "tran-dinh-huou.jpg",
+      "Phan Đình Diệu": "phan-dinh-dieu.jpg",
+      "Nguyễn Đình Thi": "nguyen-dinh-thi.jpg",
+      "Nguyễn Trần Bạt": "nguyen-tran-bat.jpg",
+      "Đoàn Thị Điểm": "doan-thi-diem.jpg",
+      "Nguyễn Huy Thiệp": "nguyen-huy-thiep.jpg",
+      "Lưu Sơn Minh": "luu-son-minh.jpg",
+      "Lộng Chương": "long-chuong.jpg"
+    };
+
+    const portraitAlt = {
+      "Đặng Dung": "Minh họa chân dung Đặng Dung",
+      "Đoàn Thị Điểm": "Minh họa chân dung Đoàn Thị Điểm"
+    };
+
+    const photoAttributions = [
+      { author: "Yann Martel", creator: "Shane Lin", file: "Yann_martel_2007-10-25_Seattle_WA_USA.jpg", license: "CC BY-SA 2.5", licenseUrl: "https://creativecommons.org/licenses/by-sa/2.5/" },
+      { author: "Thanh Thảo", creator: "Conduongmoi", file: "Poet_Thanh_Thao.JPG", license: "CC BY-SA 3.0", licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0/" },
+      { author: "Bô-mác-se (Beaumarchais)", creator: "JackyM59", file: "Pierre-Augustin_Caron_de_Beaumarchais_par_Jean-Marc_Nattier.jpg", license: "CC BY-SA 4.0", licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/" }
+    ];
+
+    function q(prompt, correct, ...distractors) {
+      const choices = Array.isArray(correct) ? [...correct] : [correct, ...distractors];
+      const initialCorrectIndex = Array.isArray(correct) ? distractors[0] : 0;
+      if (choices.length !== 4 || !Number.isInteger(initialCorrectIndex) || initialCorrectIndex < 0 || initialCorrectIndex >= choices.length) {
+        throw new Error(`Câu hỏi không hợp lệ: ${prompt}`);
+      }
+      let hash = 0;
+      for (const character of prompt) hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
+      const correctIndex = hash % choices.length;
+      [choices[initialCorrectIndex], choices[correctIndex]] = [choices[correctIndex], choices[initialCorrectIndex]];
+      return [prompt, choices, correctIndex, `Câu hỏi yêu cầu ${prompt} Đáp án “${choices[correctIndex]}” là thông tin chính xác để trả lời yêu cầu này.`];
+    }
+
+    const chapters = [
+      {
+        number: 1, title: "Khả năng lớn lao của tiểu thuyết", subtitle: "Bài 1 · Trang 9–39",
+        authors: [
+          { name: "Vũ Trọng Phụng", work: "Xuân Tóc Đỏ cứu quốc", questions: [
+            q("Vũ Trọng Phụng sinh và mất vào khoảng thời gian nào?", "1912–1939", "1900–1945", "1920–1980", "1890–1930"),
+            q("Xuân Tóc Đỏ cứu quốc trích từ tiểu thuyết nào?", "Số đỏ", "Giông tố", "Làm đĩ", "Vỡ đê"),
+            q("Xuân Tóc Đỏ là kiểu nhân vật nào?", "Kẻ cơ hội, gặp thời mà nổi danh", "Người anh hùng cứu nước", "Nông dân hiền lành", "Viên quan thanh liêm"),
+            q("Tiếng cười trong sáng tác Vũ Trọng Phụng thường hướng vào điều gì?", "Sự giả dối, lố bịch của xã hội đương thời", "Vẻ đẹp thiên nhiên", "Đời sống chiến trường", "Phong tục miền núi"),
+            q("Vũ Trọng Phụng được xem là cây bút xuất sắc của khuynh hướng nào?", "Văn học hiện thực trào phúng", "Thơ lãng mạn", "Truyện truyền kì", "Văn học sử thi")
+          ]},
+          { name: "Bảo Ninh", work: "Nỗi buồn chiến tranh", questions: [
+            q("Nỗi buồn chiến tranh là tiểu thuyết của ai?", "Bảo Ninh", "Vũ Trọng Phụng", "Nguyễn Minh Châu", "Nguyễn Huy Thiệp"),
+            q("Tên khai sinh của nhà văn Bảo Ninh là gì?", "Hoàng Ấu Phương", "Nguyễn Văn Tài", "Trần Đình Đắc", "Phạm Văn Hiền"),
+            q("Nhân vật trung tâm trong đoạn trích Nỗi buồn chiến tranh là ai?", "Kiên", "Phùng", "Xuân Tóc Đỏ", "Pi"),
+            q("Tác phẩm tập trung khám phá điều gì?", "Kí ức và những tổn thương do chiến tranh để lại", "Cuộc sống của quan lại thời phong kiến", "Hành trình đi tìm kho báu", "Sự hình thành một vở kịch"),
+            q("Cách kể chuyện của tiểu thuyết có đặc điểm nổi bật nào?", "Đan xen, xáo trộn các lớp hồi ức", "Chỉ kể theo trình tự thời gian thẳng", "Hoàn toàn bằng đối thoại", "Dùng người kể chuyện ngôi thứ hai")
+          ]},
+          { name: "Yann Martel", work: "Trên xuồng cứu nạn", questions: [
+            q("Yann Martel sinh ở Tây Ban Nha nhưng mang quốc tịch nước nào?", "Canada", "Ấn Độ", "Pháp", "Nga"),
+            q("Trên xuồng cứu nạn trích từ tiểu thuyết nào?", "Cuộc đời của Pi", "Ông già và biển cả", "Robinson Crusoe", "Nỗi buồn chiến tranh"),
+            q("Nhân vật chính trên xuồng cứu nạn có tên gọi thân mật là gì?", "Pi", "Kiên", "Phùng", "Xuân"),
+            q("Con vật nào cùng Pi lênh đênh trên xuồng?", "Một con hổ Bengal", "Một con voi", "Một con chó sói", "Một con cá voi"),
+            q("Cuộc đời của Pi được trao giải Man Booker vào năm nào?", "2002", "1990", "2010", "2018")
+          ]}
+        ]
+      },
+      {
+        number: 2, title: "Những thế giới thơ", subtitle: "Bài 2 · Trang 40–61",
+        authors: [
+          { name: "Đặng Dung", work: "Cảm hoài", questions: [
+            q("Đặng Dung là nhà thơ, tướng lĩnh sống vào giai đoạn nào?", "Cuối Trần, đầu thế kỉ XV", "Đầu thế kỉ XVIII", "Cuối thế kỉ XIX", "Thời hiện đại"),
+            q("Cảm hoài bộc lộ tâm trạng nào của nhân vật trữ tình?", "Nỗi đau trước thời cuộc và chí lớn chưa thành", "Niềm vui ngày hội", "Nỗi nhớ tình yêu đôi lứa", "Sự thanh thản nơi ẩn dật"),
+            q("Bài thơ Cảm hoài được viết chủ yếu bằng ngôn ngữ nào?", "Chữ Hán", "Chữ Nôm", "Tiếng Pháp", "Chữ Quốc ngữ hiện đại"),
+            q("Hình tượng người anh hùng trong bài thơ gắn với khát vọng nào?", "Gánh vác việc nước, trả nợ công danh", "Tìm kiếm cuộc sống giàu sang", "Rời bỏ quê hương", "Theo đuổi thú vui tao nhã"),
+            q("Sắc thái cảm xúc nổi bật của Cảm hoài là gì?", "Bi tráng, day dứt", "Hài hước, châm biếm", "Vui tươi, dí dỏm", "Lạnh lùng, khách quan")
+          ]},
+          { name: "Quang Dũng", work: "Tây Tiến", questions: [
+            q("Quang Dũng sinh năm nào?", "1921", "1911", "1931", "1941"),
+            q("Tây Tiến là tên của đơn vị nào?", "Đoàn quân hoạt động ở biên giới Việt – Lào", "Một đội văn nghệ", "Một phong trào học sinh", "Một đoàn thám hiểm"),
+            q("Bài thơ Tây Tiến được viết vào năm nào?", "1948", "1945", "1947", "1954"),
+            q("Cảm hứng chủ đạo của Tây Tiến là gì?", "Nỗi nhớ đồng đội và miền Tây", "Tình yêu phố thị", "Nỗi nhớ tuổi thơ", "Niềm vui lao động"),
+            q("Người lính Tây Tiến hiện lên với vẻ đẹp nào?", "Hào hoa, dũng cảm và bi tráng", "Ích kỉ, lạnh lùng", "Chỉ mơ mộng, thiếu ý chí", "Tách biệt với đồng đội")
+          ]},
+          { name: "Thanh Thảo", work: "Đàn ghi ta của Lor-ca", questions: [
+            q("Thanh Thảo sinh năm nào?", "1946", "1936", "1956", "1966"),
+            q("Nhân vật nghệ sĩ trong nhan đề bài thơ là ai?", "Federico García Lorca", "Pablo Neruda", "Miguel de Cervantes", "Salvador Dalí"),
+            q("Đàn ghi ta của Lor-ca gợi liên tưởng đến nền văn hóa nào?", "Tây Ban Nha", "Ấn Độ", "Nga", "Nhật Bản"),
+            q("Bài thơ được viết theo hình thức nào?", "Thơ tự do, giàu tính tượng trưng", "Thất ngôn bát cú", "Lục bát", "Song thất lục bát"),
+            q("Hình tượng tiếng đàn trong bài thơ thường gợi điều gì?", "Vẻ đẹp nghệ thuật và số phận bi kịch của Lor-ca", "Quyền lực của nhà vua", "Cuộc sống nơi chiến khu", "Niềm vui mùa gặt")
+          ]},
+          { name: "Rabindranath Tagore", work: "Bài thơ số 28", questions: [
+            q("Rabindranath Tagore là nhà thơ của quốc gia nào?", "Ấn Độ", "Tây Ban Nha", "Nga", "Canada"),
+            q("Tagore nhận giải Nobel Văn học vào năm nào?", "1913", "1901", "1925", "1945"),
+            q("Bài thơ số 28 được trích từ tập thơ nào?", "Người làm vườn", "Thơ Dâng", "Cỏ dại", "Gitanjali"),
+            q("Chủ đề nổi bật của Bài thơ số 28 là gì?", "Tình yêu và khát vọng thấu hiểu tâm hồn", "Lòng căm thù chiến tranh", "Chí làm trai cứu nước", "Tiếng cười phê phán quan lại"),
+            q("Ngoài thơ, Tagore còn có đóng góp nổi bật ở lĩnh vực nào?", "Văn hóa và nghệ thuật", "Quân sự", "Toán học", "Kiến trúc")
+          ]}
+        ]
+      },
+      {
+        number: 3, title: "Lập luận trong văn bản nghị luận", subtitle: "Bài 3 · Trang 62–91",
+        authors: [
+          { name: "Trần Đình Hượu", work: "Nhìn về vốn văn hóa dân tộc", questions: [
+            q("Trần Đình Hượu là học giả nổi bật trong lĩnh vực nào?", "Nghiên cứu văn hóa và tư tưởng", "Sân khấu hài kịch", "Hội họa", "Y học"),
+            q("Nhìn về vốn văn hóa dân tộc bàn về vấn đề gì?", "Đặc điểm và giá trị của văn hóa Việt Nam", "Lịch sử một chiến dịch", "Đời sống của người lính", "Kĩ thuật làm thơ"),
+            q("Tác giả dùng thao tác nào để triển khai lập luận?", "Phân tích, so sánh và khái quát", "Kể chuyện phiêu lưu", "Đối thoại sân khấu", "Miêu tả phong cảnh"),
+            q("Một định hướng được gợi ra từ văn bản là gì?", "Tiếp thu văn hóa bên ngoài có chọn lọc", "Từ chối mọi giao lưu", "Chỉ giữ nguyên quá khứ", "Xem nhẹ bản sắc dân tộc"),
+            q("Văn bản thuộc kiểu văn bản nào?", "Nghị luận", "Truyện ngắn", "Hài kịch", "Hồi kí")
+          ]},
+          { name: "Phan Đình Diệu", work: "Năng lực sáng tạo", questions: [
+            q("Phan Đình Diệu là nhà khoa học nổi tiếng ở lĩnh vực nào?", "Toán học và tin học", "Y học", "Khảo cổ học", "Âm nhạc"),
+            q("Phan Đình Diệu quê ở tỉnh nào?", "Hà Tĩnh", "Nghệ An", "Quảng Nam", "Hưng Yên"),
+            q("Văn bản Năng lực sáng tạo tập trung bàn về điều gì?", "Khả năng tạo ra cái mới có giá trị", "Lịch sử hình thành thơ lục bát", "Đặc điểm của hài kịch", "Kí ức về chiến tranh"),
+            q("Theo văn bản, sáng tạo có vai trò gì?", "Giúp tìm ra giải pháp và giá trị mới", "Chỉ giúp ghi nhớ kiến thức cũ", "Thay thế mọi hoạt động học tập", "Chỉ cần thiết trong nghệ thuật"),
+            q("Phan Đình Diệu sinh năm nào?", "1936", "1926", "1946", "1956")
+          ]},
+          { name: "Nguyễn Đình Thi", work: "Mấy ý nghĩ về thơ", questions: [
+            q("Nguyễn Đình Thi sinh năm nào?", "1924", "1914", "1934", "1944"),
+            q("Mấy ý nghĩ về thơ được viết vào khoảng năm nào?", "1949", "1930", "1959", "1975"),
+            q("Nguyễn Đình Thi hoạt động ở những lĩnh vực nào?", "Thơ, văn, nhạc và phê bình", "Chỉ hội họa", "Chỉ sân khấu", "Toán học và tin học"),
+            q("Văn bản Mấy ý nghĩ về thơ thuộc thể loại nào?", "Tiểu luận", "Truyện truyền kì", "Phóng sự", "Hài kịch"),
+            q("Tác giả nhấn mạnh điều gì khi bàn về thơ?", "Thơ bắt nguồn từ rung động và đời sống tâm hồn", "Thơ chỉ là lời đẹp có vần", "Thơ không cần cảm xúc", "Thơ chỉ dùng để kể sự kiện")
+          ]},
+          { name: "Nguyễn Trần Bạt", work: "Cảm hứng và sáng tạo", questions: [
+            q("Nguyễn Trần Bạt quê ở tỉnh nào?", "Nghệ An", "Hà Nội", "Hà Tĩnh", "Thanh Hóa"),
+            q("Nguyễn Trần Bạt hoạt động trong những lĩnh vực nào?", "Luật, kinh doanh và nghiên cứu xã hội", "Thơ và sân khấu", "Quân sự và ngoại giao", "Y học và sinh học"),
+            q("Cảm hứng và sáng tạo được trích từ tác phẩm nào?", "Cội nguồn cảm hứng", "Suy tưởng", "Thơ Dâng", "Một góc nhìn của trí thức"),
+            q("Theo văn bản, cảm hứng có vai trò gì?", "Thúc đẩy con người sáng tạo", "Ngăn cản tư duy độc lập", "Thay thế hoàn toàn tri thức", "Chỉ tạo cảm xúc nhất thời"),
+            q("Văn bản Cảm hứng và sáng tạo thuộc kiểu văn bản nào?", "Nghị luận", "Nhật kí", "Truyện ngắn", "Thơ trữ tình")
+          ]}
+        ]
+      },
+      {
+        number: 4, title: "Yếu tố kì ảo trong truyện kể", subtitle: "Bài 4 · Trang 92–129",
+        authors: [
+          { name: "Đoàn Thị Điểm", work: "Hải khẩu linh từ", questions: [
+            q("Đoàn Thị Điểm sống vào khoảng thời gian nào?", "1705–1748", "1605–1648", "1805–1848", "1905–1948"),
+            q("Biệt hiệu của Đoàn Thị Điểm là gì?", "Hồng Hà nữ sĩ", "Bà Huyện Thanh Quan", "Nữ sĩ Tây Hồ", "Bạch Vân cư sĩ"),
+            q("Hải khẩu linh từ thuộc tập truyện nào?", "Truyền kì tân phả", "Truyền kì mạn lục", "Vũ trung tùy bút", "Tang thương ngẫu lục"),
+            q("Nhân vật nữ trung tâm trong Hải khẩu linh từ là ai?", "Bích Châu", "Vũ Nương", "Thúy Kiều", "Tấm"),
+            q("Yếu tố kì ảo trong truyện có tác dụng gì?", "Tạo không khí linh thiêng và thể hiện niềm tin công lí", "Chỉ làm chậm cốt truyện", "Thay thế hoàn toàn nhân vật", "Tạo tiếng cười châm biếm")
+          ]},
+          { name: "Nguyễn Huy Thiệp", work: "Muối của rừng", questions: [
+            q("Nguyễn Huy Thiệp sinh năm nào?", "1950", "1940", "1960", "1970"),
+            q("Nhân vật ông Diểu vào rừng với mục đích gì?", "Đi săn", "Tìm thuốc", "Đi hái muối", "Tìm người thân"),
+            q("Con vật nào khiến ông Diểu dần thay đổi cách nhìn?", "Một gia đình khỉ", "Một đàn voi", "Một con chó sói", "Một đôi chim"),
+            q("Muối của rừng đặt ra suy ngẫm về mối quan hệ nào?", "Con người với thiên nhiên và muôn loài", "Thành thị với công nghiệp", "Thầy trò trong lớp học", "Quan lại với triều đình"),
+            q("Thể loại sáng tác làm nên tên tuổi Nguyễn Huy Thiệp là gì?", "Truyện ngắn", "Trường ca", "Hịch", "Kịch thơ")
+          ]},
+          { name: "Lưu Sơn Minh", work: "Bến trần gian", questions: [
+            q("Lưu Sơn Minh sinh năm nào?", "1974", "1964", "1984", "1954"),
+            q("Lưu Sơn Minh thành công nổi bật với đề tài nào?", "Lịch sử", "Khoa học viễn tưởng", "Thể thao", "Đô thị hiện đại"),
+            q("Bến trần gian thuộc thể loại nào?", "Truyện ngắn", "Hài kịch", "Thơ tự do", "Phóng sự"),
+            q("Bến trần gian gợi suy tư về điều gì?", "Mất mát do chiến tranh và khát vọng bình yên", "Sự phồn hoa của đô thị", "Cuộc sống của giới quan lại", "Khát vọng chinh phục biển cả"),
+            q("Truyện Bến trần gian được in trong tập nào?", "Mưa sâm cầm", "Số đỏ", "Người làm vườn", "Cội nguồn cảm hứng")
+          ]}
+        ]
+      },
+      {
+        number: 5, title: "Tiếng cười của hài kịch", subtitle: "Bài 5 · Trang 130–157",
+        authors: [
+          { name: "Nikolai Gogol", work: "Nhân vật quan trọng", questions: [
+            q("Nikolai Gogol sống vào khoảng thời gian nào?", "1809–1852", "1709–1752", "1909–1952", "1819–1882"),
+            q("Gogol là nhà văn, nhà soạn kịch gắn với nền văn học nào?", "Nga", "Anh", "Pháp", "Tây Ban Nha"),
+            q("Nhân vật quan trọng trích từ vở hài kịch nào?", "Quan thanh tra", "Người lái buôn thành Vơ-ni-dơ", "Thợ cạo thành Xê-vin", "Giấu của"),
+            q("Khơ-lét-xta-cốp bị các quan chức nhầm là ai?", "Quan thanh tra", "Thị trưởng", "Nhà văn nổi tiếng", "Thẩm phán"),
+            q("Tiếng cười của Gogol chủ yếu phê phán điều gì?", "Thói quan liêu, giả dối và tham nhũng", "Cuộc sống của người lính", "Sự khắc nghiệt của thiên nhiên", "Những đổi thay trong thơ ca")
+          ]},
+          { name: "Lộng Chương", work: "Giấu của", questions: [
+            q("Tên khai sinh của Lộng Chương là gì?", "Phạm Văn Hiền", "Nguyễn Văn Hiền", "Trần Văn Chương", "Lê Văn Lộng"),
+            q("Lộng Chương nổi tiếng nhất trong lĩnh vực nào?", "Sân khấu và hài kịch", "Thơ trữ tình", "Nghiên cứu toán học", "Tiểu thuyết lịch sử"),
+            q("Giấu của châm biếm thói xấu nào?", "Keo kiệt, tham của và sĩ diện", "Lòng dũng cảm", "Tình yêu thiên nhiên", "Sự hi sinh vì đất nước"),
+            q("Hai nhân vật Đại Cát trong đoạn trích tìm cách làm gì?", "Giấu của cải trong những bức ảnh", "Bán nhà để đi xa", "Tìm kho báu ngoài đảo", "Trốn khỏi một cuộc chiến"),
+            q("Lộng Chương được trao giải thưởng Hồ Chí Minh về Văn học nghệ thuật năm nào?", "2000", "1980", "1990", "2010")
+          ]},
+          { name: "Bô-mác-se (Beaumarchais)", work: "Cẩn thận hão", questions: [
+            q("Bô-mác-se là nhà soạn kịch của nước nào?", "Pháp", "Nga", "Anh", "Ý"),
+            q("Bô-mác-se sống vào khoảng thời gian nào?", "1732–1799", "1632–1699", "1832–1899", "1732–1819"),
+            q("Cẩn thận hão trích từ vở kịch nào?", "Thợ cạo thành Xê-vin", "Đám cưới Phi-ga-rô", "Quan thanh tra", "Người lái buôn thành Vơ-ni-dơ"),
+            q("Bô-mác-se được xem là nhà soạn kịch tiêu biểu của thời kì nào?", "Cuối chế độ quân chủ trước Cách mạng Pháp 1789", "Thời Phục hưng Ý", "Thời Khai sáng ở Nga", "Giai đoạn sau Chiến tranh thế giới thứ hai"),
+            q("Hài kịch của Bô-mác-se thường dùng tiếng cười để làm gì?", "Châm biếm cái cũ và những thói xấu xã hội", "Tôn vinh chiến tranh", "Miêu tả thiên nhiên", "Kể lại truyền thuyết dân gian")
+          ]}
+        ]
+      }
+    ];
+
+    const additionalQuestionsByAuthor = {
+      "Vũ Trọng Phụng": [
+        q("Đoạn trích “Xuân Tóc Đỏ cứu quốc” thuộc tiểu thuyết nào?", "Số đỏ", "Giông tố", "Làm đĩ", "Vỡ đê"),
+        q("Trận đấu trong đoạn trích là môn thể thao nào?", "Quần vợt", "Bóng đá", "Bóng chuyền", "Đua ngựa"),
+        q("Nhan đề “Xuân Tóc Đỏ cứu quốc” chủ yếu tạo sắc thái gì?", "Mỉa mai", "Bi tráng", "Trữ tình", "Kì ảo"),
+        q("Trận đấu được nâng thành vấn đề gì?", "Danh dự quốc gia", "Một lễ hội làng", "Cuộc tranh chấp đất đai", "Một kì thi học đường"),
+        q("Sự tung hô Xuân trong đoạn trích cho thấy điều gì?", "Danh tiếng có thể được tạo dựng chóng vánh", "Thành tích luôn được kiểm chứng kĩ", "Đám đông thờ ơ với tin tức", "Người hùng thường tránh công chúng"),
+        q("Lời lẽ trang trọng về “cứu quốc” tương phản với điều gì?", "Tình huống thi đấu trớ trêu", "Khung cảnh thiên nhiên yên bình", "Một buổi sum họp gia đình", "Không khí lao động thường ngày"),
+        q("Trận quần vợt trong đoạn trích còn gợi đến điều gì?", "Màn trình diễn chính trị", "Cuộc thi tuyển quan lại", "Nghi lễ tôn giáo", "Sinh hoạt lớp học"),
+        q("Cách đám đông đón nhận Xuân chủ yếu dựa vào điều gì?", "Lời tung hô và danh tiếng", "Một cuộc điều tra độc lập", "Kết quả học tập", "Lời thú nhận của Xuân"),
+        q("Một thủ pháp gây cười nổi bật trong đoạn trích là gì?", "Phóng đại", "Độc thoại nội tâm", "Miêu tả phong cảnh", "Hồi tưởng trữ tình"),
+        q("Hình tượng “người cứu quốc” trong đoạn trích được khắc họa ra sao?", "Bằng giọng điệu giễu nhại", "Bằng giọng điệu sử thi trang nghiêm", "Bằng giọng điệu bi lụy", "Bằng lối kể thần thoại"),
+        q("Đoạn trích phê phán điều gì qua những lời ca tụng?", "Thói tung hô thiếu suy xét", "Tinh thần ham học hỏi", "Nếp sống giản dị", "Lòng kiên trì trong lao động"),
+        q("Sự chú ý dành cho trận đấu cho thấy công chúng dễ bị cuốn vào điều gì?", "Một màn trình diễn gây chú ý", "Một cuộc thảo luận khoa học", "Một buổi đọc sách", "Một chuyến thám hiểm"),
+        q("Tác dụng của việc dùng những danh xưng lớn lao cho Xuân là gì?", "Tạo tiếng cười châm biếm", "Làm câu chuyện thêm huyền bí", "Tạo không khí lãng mạn", "Giải thích lịch sử trận đấu"),
+        q("Qua đoạn trích, hình ảnh người hùng được tạo nên như thế nào?", "Bởi sự tung hô của xã hội", "Bởi dòng dõi quý tộc", "Bởi lời tiên tri", "Bởi chiến công được ghi chép đầy đủ"),
+        q("Sự đối lập nào góp phần tạo nên tiếng cười trong đoạn trích?", "Việc lớn lao được gắn với cảnh huống lố bịch", "Miền núi đối lập với đồng bằng", "Ngày hội đối lập với ngày thường", "Tuổi trẻ đối lập với tuổi già")
+      ],
+      "Bảo Ninh": [
+        q("“Nỗi buồn chiến tranh” thuộc thể loại văn học nào?", ["Tiểu thuyết", "Truyện cổ tích", "Tùy bút du lịch", "Kịch nói"], 0),
+        q("Tác phẩm lấy cuộc chiến nào làm bối cảnh chính?", ["Chiến tranh Việt Nam", "Chiến tranh thế giới thứ nhất", "Nội chiến Hoa Kỳ", "Chiến tranh Triều Tiên"], 0),
+        q("Nhan đề “Nỗi buồn chiến tranh” gợi sắc thái nào?", ["U buồn, suy tư", "Hài hước, nhẹ nhõm", "Phiêu lưu, kì thú", "Hân hoan, náo nhiệt"], 0),
+        q("Tác phẩm thường được nhìn nhận như tiểu thuyết gì?", ["Tiểu thuyết phản chiến", "Tiểu thuyết trinh thám", "Tiểu thuyết kiếm hiệp", "Tiểu thuyết khoa học viễn tưởng"], 0),
+        q("Người lính trong tác phẩm được khắc họa chủ yếu như thế nào?", ["Con người có đời sống nội tâm phức tạp", "Những hình tượng không có cảm xúc", "Các nhân vật chỉ mang tính hài hước", "Những anh hùng có năng lực siêu nhiên"], 0),
+        q("Tác phẩm mở rộng góc nhìn ngoài chiến trường đến đâu?", ["Đời sống sau chiến tranh", "Thời đại cổ đại", "Tương lai trên sao Hỏa", "Một triều đình phong kiến"], 0),
+        q("Giọng văn của tác phẩm thường mang sắc thái nào?", ["Trầm lắng, chiêm nghiệm", "Tếu táo, bông đùa", "Hùng biện, cổ động", "Tưng bừng, lễ hội"], 0),
+        q("Một trọng tâm của tác phẩm là điều gì?", ["Cái giá con người phải trả trong chiến tranh", "Quá trình phát minh máy móc", "Cuộc cạnh tranh thương mại", "Đời sống của giới quý tộc"], 0),
+        q("Tác phẩm nhìn chiến tranh như thế nào?", ["Một trải nghiệm phức tạp, nhiều mất mát", "Một cuộc vui không để lại hệ quả", "Một trò chơi có luật rõ ràng", "Một chuyến đi nghỉ dưỡng"], 0),
+        q("Các mối quan hệ con người trong tác phẩm thường hiện lên ra sao?", ["Chịu sức ép của hoàn cảnh chiến tranh", "Hoàn toàn tách khỏi lịch sử", "Chỉ phục vụ yếu tố gây cười", "Không liên quan đến cốt truyện"], 0),
+        q("Tác phẩm thuộc dòng văn học nào?", ["Văn học Việt Nam hiện đại", "Văn học Hy Lạp cổ đại", "Văn học trung đại Nhật Bản", "Văn học Phục hưng Ý"], 0),
+        q("Cách tiếp cận chiến tranh trong tiểu thuyết tránh điều gì?", ["Chỉ nhìn chiến tranh qua chiến thắng", "Đề cập đến con người", "Khắc họa bối cảnh lịch sử", "Miêu tả đời sống người lính"], 0),
+        q("Tác phẩm gợi suy ngẫm về điều gì ngoài chiến trường?", ["Những lựa chọn và giá trị của con người", "Các quy luật thiên văn", "Kĩ thuật xây dựng cầu đường", "Lịch sử các môn thể thao"], 0),
+        q("Điều gì giúp tác phẩm vượt khỏi phạm vi một bản tường thuật trận đánh?", ["Sự chú ý đến số phận con người", "Việc liệt kê vũ khí", "Các bảng thống kê quân số", "Những sơ đồ chiến thuật"], 0),
+        q("Cảm nhận nào phù hợp với tinh thần chung của tiểu thuyết?", ["Chiến tranh để lại những hệ quả sâu rộng", "Chiến tranh chỉ là cuộc phiêu lưu vui vẻ", "Chiến tranh không ảnh hưởng đến đời sống", "Chiến tranh luôn được kể bằng giọng hài hước"], 0)
+      ],
+      "Yann Martel": [
+        q("“Trên xuồng cứu nạn” là đoạn trích từ tác phẩm nào?", ["Cuộc đời của Pi", "Nhà giả kim", "Ông già và biển cả", "Robinson Crusoe"], 0),
+        q("Không gian chính của đoạn trích là gì?", ["Một chiếc xuồng cứu nạn giữa biển", "Một nhà ga đông đúc", "Một ngôi làng miền núi", "Một thành phố dưới lòng đất"], 0),
+        q("Chiếc xuồng cứu nạn trong truyện có màu gì?", ["Màu cam", "Màu tím", "Màu đen", "Màu xanh lá"], 0),
+        q("Chiếc xuồng trở thành nơi trú ẩn sau sự kiện nào?", ["Con tàu bị chìm", "Một trận động đất", "Một vụ cháy rừng", "Một cơn bão tuyết trên núi"], 0),
+        q("Con vật nào xuất hiện trên xuồng cứu nạn?", ["Ngựa vằn", "Lạc đà", "Hươu cao cổ", "Gấu Bắc Cực"], 0),
+        q("Con ngựa vằn trên xuồng bị thương ở đâu?", ["Chân", "Tai", "Đuôi", "Mõm"], 0),
+        q("Con vật nào tấn công ngựa vằn trong câu chuyện?", ["Linh cẩu", "Sư tử", "Cá sấu", "Khỉ đột"], 0),
+        q("Đại dương nào là bối cảnh hành trình trên xuồng?", ["Thái Bình Dương", "Đại Tây Dương", "Bắc Băng Dương", "Nam Đại Dương"], 0),
+        q("Chiếc xuồng giữa biển khơi làm nổi bật hoàn cảnh nào?", ["Sự cô lập và hiểm nguy", "Cuộc sống tiện nghi", "Không khí lễ hội", "Sự yên bình của thành phố"], 0),
+        q("Để sống sót trên biển, người trên xuồng cần chú ý điều gì?", ["Nguồn nước và thức ăn", "Lịch học và bài kiểm tra", "Vé tàu và hành lý", "Cây trồng và mùa vụ"], 0),
+        q("Các con vật trên xuồng góp phần tạo nên tình huống gì?", ["Căng thẳng sinh tồn", "Một cuộc thi tài năng", "Một buổi biểu diễn xiếc", "Một chuyến tham quan vườn thú"], 0),
+        q("Cách kể trong đoạn trích kết hợp điều gì?", ["Quan sát cụ thể và yếu tố hồi hộp", "Lời tiên tri và phép thuật", "Thơ trữ tình và hài kịch sân khấu", "Tư liệu khoa học và công thức toán"], 0),
+        q("Hành vi của các con vật trên xuồng nhấn mạnh điều gì?", ["Bản năng sinh tồn", "Khả năng nói tiếng người", "Tập quán xây tổ", "Đời sống trong thành phố"], 0),
+        q("Thử thách trung tâm của cảnh trên xuồng là gì?", ["Duy trì sự sống giữa biển khơi", "Tìm đường trong mê cung", "Vượt qua sa mạc nóng", "Giải một câu đố cổ"], 0),
+        q("Màu cam nổi bật của xuồng giúp tạo ấn tượng nào?", ["Dễ nhận ra giữa biển rộng", "Hòa lẫn với rừng cây", "Tàng hình dưới nước", "Phát sáng trong bóng tối"], 0)
+      ],
+      "Đặng Dung": [
+        q("Cảm hoài được viết theo thể thơ nào?", ["Thất ngôn bát cú Đường luật", "Thất ngôn tứ tuyệt", "Lục bát", "Song thất lục bát"], 0),
+        q("Cặp câu “Thời lai đồ điếu thành công dị / Vận khứ anh hùng ẩm hận đa” nằm ở phần nào của bài thơ?", ["Hai câu thực", "Hai câu đề", "Hai câu luận", "Hai câu kết"], 0),
+        q("Cặp câu “Thời lai…” và “Vận khứ…” chủ yếu tạo nên phép đối lập nào?", ["Thời vận thuận lợi và thời vận bất lợi", "Tuổi trẻ và tuổi già", "Miền núi và đồng bằng", "Ngày và đêm"], 0),
+        q("Trong câu thơ “Thời lai đồ điếu thành công dị”, “đồ điếu” gợi những người làm nghề nào?", ["Mổ thịt và câu cá", "Dệt vải và trồng dâu", "Rèn sắt và làm mộc", "Buôn bán và chở đò"], 0),
+        q("“Long Tuyền” trong câu kết là tên gọi gắn với vật gì?", ["Thanh kiếm nổi tiếng", "Con ngựa chiến", "Một ngọn núi", "Một dòng sông"], 0),
+        q("Hình ảnh “đầu tiên bạch” trong câu “Quốc thù vị báo đầu tiên bạch” nhấn mạnh điều gì?", ["Tóc đã bạc theo năm tháng", "Một mái tóc nhuộm trắng", "Ánh trăng chiếu lên tóc", "Một người vừa thay đổi diện mạo"], 0),
+        q("Cụm từ “kỷ độ” trong câu “Kỷ độ Long Tuyền đái nguyệt ma” có nghĩa gần nhất là gì?", ["Biết bao lần", "Chỉ một lần", "Ngày mai", "Từ thuở nhỏ"], 0),
+        q("Câu “Kỷ độ Long Tuyền đái nguyệt ma” gợi hình ảnh nào?", ["Nhiều lần mài kiếm dưới trăng", "Một lần vung kiếm giữa ban ngày", "Thanh kiếm bị bỏ quên trong rừng", "Người chèo thuyền ngắm trăng"], 0),
+        q("Trong bài thơ, các cặp câu giữa thường thể hiện đặc điểm nào của thơ Đường luật?", ["Phép đối", "Điệp khúc cố định", "Vần lưng liên tục", "Câu thơ tự do không theo niêm luật"], 0),
+        q("Cặp từ “thời lai” và “vận khứ” đối nhau chủ yếu về phương diện nào?", ["Thời thế và vận hội", "Màu sắc và âm thanh", "Sông núi và biển cả", "Tuổi tác và nghề nghiệp"], 0),
+        q("Hai câu cuối của bài thơ tập trung vào hình ảnh nào?", ["Mối thù chưa trả và thanh kiếm", "Một cuộc tiệc vui và chén rượu", "Cảnh làng quê và mùa gặt", "Một chuyến đi xa và con thuyền"], 0),
+        q("Từ “ma” trong câu thơ “Kỷ độ Long Tuyền đái nguyệt ma” có nghĩa là gì?", ["Mài", "Mơ", "Mua", "Mở"], 0),
+        q("Bài thơ có tổng cộng bao nhiêu câu?", ["Tám câu", "Bốn câu", "Sáu câu", "Mười câu"], 0),
+        q("Vần ở các câu thơ cuối thường góp phần tạo âm hưởng nào cho Cảm hoài?", ["Trang trọng, hàm súc", "Hài hước, bông đùa", "Hồn nhiên như đồng dao", "Nhanh gấp như lời kể"], 0),
+        q("Nhan đề “Cảm hoài” có thể hiểu gần nhất là gì?", ["Bày tỏ nỗi lòng, cảm khái", "Kể chuyện một chuyến đi", "Miêu tả cảnh hội hè", "Tả cảnh sinh hoạt thường ngày"], 0)
+      ],
+      "Quang Dũng": [
+        q("Những địa danh Sài Khao, Mường Lát, Pha Luông trong Tây Tiến chủ yếu gợi điều gì?", ["Những chặng đường hành quân qua miền núi", "Các bến cảng ven biển", "Những phố thị đông đúc", "Một hành trình xuyên sa mạc"], 0),
+        q("Câu “Dốc lên khúc khuỷu dốc thăm thẳm” dùng những từ láy nào để gợi địa hình?", ["Khúc khuỷu, thăm thẳm", "Heo hút, xa khơi", "Dãi dầu, bừng lên", "Oai linh, gầm thét"], 0),
+        q("Cách diễn đạt “súng ngửi trời” trong câu thơ về cồn mây có tác dụng gì?", ["Phóng đại độ cao của dốc núi", "Miêu tả tiếng súng giữa trận", "Gợi một cuộc săn thú", "Tả thời tiết lạnh giá"], 0),
+        q("Câu “Nhà ai Pha Luông mưa xa khơi” tạo nên sự chuyển đổi nào trong mạch thơ?", ["Từ nét dữ dội sang cảnh rộng, dịu hơn", "Từ cảnh đêm sang cảnh hội hè", "Từ đồng bằng sang biển cả", "Từ hiện tại sang một giấc mơ"], 0),
+        q("Cặp câu nhắc đến thác gầm thét và cọp trêu người làm nổi bật điều gì?", ["Sự hoang vu, hiểm trở của thiên nhiên", "Không khí náo nhiệt của phố phường", "Vẻ yên ả của một miền biển", "Sự trù phú của ruộng đồng"], 0),
+        q("Câu “Anh bạn dãi dầu không bước nữa” nói giảm về điều gì?", ["Người lính đã hi sinh", "Người lính đang nghỉ chân", "Người lính bị lạc đường", "Người lính trở về quê"], 0),
+        q("Cụm từ “mùa em thơm nếp xôi” gợi nổi bật giác quan nào?", ["Khứu giác", "Thị giác", "Thính giác", "Xúc giác"], 0),
+        q("Hình ảnh “hội đuốc hoa” trong khổ thơ về doanh trại gợi không khí nào?", ["Một đêm hội rực rỡ, náo nức", "Một buổi chia tay lặng lẽ", "Một trận đánh giữa rừng", "Một phiên chợ buổi sớm"], 0),
+        q("Tiếng khèn trong khổ thơ về đêm hội góp phần tạo nên yếu tố nào?", ["Âm thanh đậm sắc thái miền núi", "Tiếng động cơ nơi phố thị", "Âm thanh của sóng biển", "Tiếng chuông nhà thờ"], 0),
+        q("Trong câu “Nhạc về Viên Chăn xây hồn thơ”, Viên Chăn là tên một thành phố ở nước nào?", ["Lào", "Thái Lan", "Campuchia", "Myanmar"], 0),
+        q("Câu “Mắt trừng gửi mộng qua biên giới” gợi phẩm chất nào của người lính?", ["Ý chí và khát vọng chiến đấu", "Sự thờ ơ với nhiệm vụ", "Nỗi sợ trước thiên nhiên", "Niềm say mê cuộc sống đô thị"], 0),
+        q("Câu “Áo bào thay chiếu anh về đất” sử dụng cách nói nào để diễn tả sự hi sinh?", ["Nói giảm, trang trọng", "Nói quá nhằm gây cười", "Liệt kê chi tiết sinh hoạt", "Câu hỏi tu từ"], 0),
+        q("Hình ảnh “sông Mã gầm lên” ở cuối bài sử dụng biện pháp tu từ nào?", ["Nhân hóa", "Hoán dụ", "Nói mỉa", "Chơi chữ"], 0),
+        q("Nhịp điệu dồn dập trong câu “Dốc lên khúc khuỷu dốc thăm thẳm” góp phần gợi điều gì?", ["Bước đường hành quân vất vả", "Nhịp chèo thuyền thong thả", "Không khí yên bình của làng quê", "Một điệu múa vui tươi"], 0),
+        q("Các từ “bừng lên” trong cảnh hội đuốc hoa gợi cảm giác nào?", ["Ánh sáng và không khí bỗng rộn ràng", "Cảnh vật chìm trong bóng tối", "Cơn mưa kéo dài dai dẳng", "Không gian tĩnh lặng, lạnh lẽo"], 0)
+      ],
+      "Thanh Thảo": [
+        q("Trong Đàn ghi ta của Lor-ca, “đường chỉ tay đã đứt” thường được hiểu là hình ảnh gợi điều gì?", ["Số phận bị cắt ngang", "Một cuộc hành trình đã kết thúc vui vẻ", "Sự đổi thay của thời tiết", "Một lời hẹn được thực hiện"], 0),
+        q("Hình ảnh “áo choàng đỏ gắt” tạo ấn tượng nổi bật bằng yếu tố nào?", ["Màu sắc mạnh, gợi cảm giác dữ dội", "Âm thanh êm dịu", "Mùi hương thoang thoảng", "Vẻ trong trẻo của sương"], 0),
+        q("Chuỗi âm “li-la li-la li-la” được lặp lại có tác dụng gì?", ["Tạo âm hưởng ngân vang như một điệp khúc", "Kể lại một cuộc đối thoại", "Mô phỏng tiếng bước chân nặng nề", "Ngắt mạch thơ thành lời giải thích"], 0),
+        q("Câu “tiếng đàn như cỏ mọc hoang” gợi sức sống như thế nào?", ["Tự nhiên, bền bỉ, khó bị dập tắt", "Mỏng manh và nhanh chóng tàn lụi", "Được sắp đặt theo khuôn phép", "Chỉ tồn tại trong một căn phòng"], 0),
+        q("Ý thơ “không ai chôn cất tiếng đàn” gợi nghịch lí nào?", ["Âm thanh vô hình vẫn có thể bị bỏ mặc", "Một nhạc cụ được cất giữ cẩn thận", "Một lễ tang đông người đưa tiễn", "Một khúc nhạc không bao giờ kết thúc"], 0),
+        q("Hình ảnh “giọt nước mắt vầng trăng” kết hợp những yếu tố nào?", ["Cái nhỏ bé và hình ảnh vũ trụ", "Mùi hương và vị giác", "Đất đai và cây cối", "Tiếng động và sự im lặng"], 0),
+        q("Cụm từ “long lanh trong đáy giếng” góp phần tạo nên kiểu hình ảnh nào?", ["Siêu thực, giàu liên tưởng", "Tả thực theo lối ghi chép khoa học", "Hài hước, châm biếm", "Ước lệ thuần túy, ít gợi hình"], 0),
+        q("Hình ảnh “ném trái tim mình vào lặng yên bất chợt” đặt cạnh nhau những gì?", ["Một hành động mãnh liệt và sự im lặng", "Một cuộc vui và tiếng cười", "Một giấc ngủ và buổi bình minh", "Một chuyến đi và nơi trở về"], 0),
+        q("Những câu thơ ngắn, tách dòng trong tác phẩm thường góp phần tạo cảm giác nào?", ["Mạch cảm xúc đứt nối, nhiều biến động", "Lời kể đều đặn như văn bản hành chính", "Nhịp điệu ổn định như bài đồng dao", "Không khí đối thoại sân khấu"], 0),
+        q("Tác phẩm đan xen hình ảnh cụ thể với liên tưởng bất ngờ để tạo nên sắc thái nào?", ["Vừa thực vừa huyền ảo", "Hoàn toàn tả thực", "Thuần hài hước", "Chỉ mang tính nghị luận"], 0),
+        q("Hình ảnh dòng sông rộng trong bài thơ gợi cảm giác nào?", ["Một khoảng cách mênh mang, khó vượt qua", "Một không gian chật hẹp, ngột ngạt", "Một con đường đông đúc", "Một khu vườn nhỏ, yên tĩnh"], 0),
+        q("Sự xuất hiện của “đáy giếng” trong hình ảnh giọt nước mắt làm không gian thơ có chiều sâu nào?", ["Chiều sâu hướng xuống, khuất lấp", "Chiều cao của bầu trời", "Chiều rộng của đồng bằng", "Chiều dài của con đường"], 0),
+        q("Việc đặt những hình ảnh đối lập cạnh nhau giúp bài thơ tăng cường điều gì?", ["Sức căng và độ đa nghĩa", "Tính kể chuyện tuyến tính", "Sự chính xác của niên biểu", "Tính hướng dẫn thực hành"], 0),
+        q("Các hình ảnh trong bài thơ thường được nối kết chủ yếu bằng cách nào?", ["Liên tưởng và chuyển đổi bất ngờ", "Trình tự thời gian chặt chẽ", "Quan hệ nhân quả được giải thích đầy đủ", "Danh sách các sự kiện"], 0),
+        q("Cách kết hợp giữa từ ngữ đời thường và hình ảnh giàu tính biểu tượng tạo hiệu quả gì?", ["Làm cảm xúc vừa gần gũi vừa nhiều tầng nghĩa", "Khiến bài thơ giống văn bản pháp luật", "Chỉ tạo sắc thái khôi hài", "Loại bỏ mọi liên tưởng cá nhân"], 0)
+      ],
+      "Rabindranath Tagore": [
+        q("Trong Bài thơ số 28, đôi mắt của người đối thoại được ví với hình ảnh nào?", ["Mặt trăng muốn dò sâu biển cả", "Ngọn núi nhìn xuống thung lũng", "Cánh chim vượt qua cánh đồng", "Ngọn đèn soi căn phòng"], 0),
+        q("Hình ảnh viên ngọc trong bài thơ có thể được chia nhỏ để làm gì?", ["Xâu thành chuỗi đeo lên cổ", "Gieo xuống đất để nảy mầm", "Thả trôi theo dòng sông", "Dùng làm chiếc chìa khóa"], 0),
+        q("Nếu chỉ là một bông hoa, người nói có thể làm gì với nó?", ["Hái để cài lên tóc", "Gieo xuống biển sâu", "Gửi qua một ngọn núi", "Khắc thành một pho tượng"], 0),
+        q("Trái tim được phân biệt với viên ngọc và bông hoa bởi đặc điểm nào?", ["Không có bờ bến hay đáy dễ xác định", "Có thể cân đo bằng chiếc cân", "Có thể cất trong một chiếc hộp", "Có thể hái khỏi cành cây"], 0),
+        q("Hình ảnh trái tim như một vương quốc nhấn mạnh điều gì?", ["Nội tâm rộng lớn, nhiều giới hạn khó dò", "Một vùng đất có biên giới rõ ràng", "Một khu vườn nhỏ chỉ có một lối vào", "Một thành phố được xây bằng đá"], 0),
+        q("Nếu niềm vui chỉ là khoảnh khắc thoáng qua, nó có thể hiện ra qua hình ảnh nào?", ["Nụ cười", "Giọt mưa", "Làn khói", "Tiếng chuông"], 0),
+        q("Nỗi đau trong bài thơ được hình dung có thể tan thành gì?", ["Những giọt nước mắt trong veo", "Một đóa hoa đỏ", "Một viên ngọc sáng", "Một dòng chữ trên giấy"], 0),
+        q("Cấu trúc lặp lại các giả định “nếu chỉ là…” giúp bài thơ làm gì?", ["Lần lượt đối chiếu những hình ảnh cụ thể", "Kể sự việc theo niên đại", "Mô tả một chuyến đi xa", "Liệt kê tên các nhân vật"], 0),
+        q("Việc đặt viên ngọc, bông hoa và trái tim cạnh nhau tạo nên sự chuyển dịch nào?", ["Từ vật thể hữu hình đến nội tâm khó nắm bắt", "Từ thành thị đến miền núi", "Từ hiện tại đến lịch sử xa xưa", "Từ âm thanh đến màu sắc"], 0),
+        q("Hình ảnh biển cả trong phép so sánh mở đầu gợi điều gì?", ["Độ sâu khó dò", "Sự khô cằn", "Sự nhỏ bé", "Sự ồn ào"], 0),
+        q("Trong hình ảnh “em là nữ hoàng” của vương quốc trái tim, “vương quốc” chủ yếu ẩn dụ cho điều gì?", ["Thế giới nội tâm của người nói", "Một quốc gia có thật", "Một khu vườn trong cung điện", "Một cuộc hành trình trên biển"], 0),
+        q("Cặp hình ảnh nụ cười và nước mắt tạo nên sự đối sánh nào?", ["Niềm vui và nỗi đau", "Ngày và đêm", "Tuổi trẻ và tuổi già", "Đất liền và biển cả"], 0),
+        q("Người nói trong bài thơ trực tiếp hướng lời đến ai?", ["Một người được gọi là “em”", "Một đám đông xa lạ", "Một vị vua", "Một người kể chuyện thứ ba"], 0),
+        q("Mạch triển khai của bài thơ đi từ những hình ảnh nào đến hình ảnh nào?", ["Viên ngọc, bông hoa đến trái tim", "Ngọn núi, cánh đồng đến thành phố", "Cơn mưa, dòng sông đến biển", "Buổi sáng, buổi trưa đến buổi tối"], 0),
+        q("Các hình ảnh cụ thể trong bài thơ chủ yếu giúp diễn đạt điều gì?", ["Những trạng thái tinh thần khó nắm bắt", "Cách chế tác đồ trang sức", "Một nghi thức trong cung đình", "Cảnh sinh hoạt ở một khu chợ"], 0)
+      ],
+      "Trần Đình Hượu": [
+        q("Trong văn bản nghị luận, luận đề là gì?", ["Vấn đề trung tâm được bàn luận", "Một ví dụ minh họa riêng lẻ", "Câu kết thúc của đoạn văn", "Tên gọi của người đọc"], 0),
+        q("Một luận điểm có vai trò chính nào trong bài nghị luận?", ["Làm rõ một khía cạnh của luận đề", "Thay thế toàn bộ luận đề", "Chỉ dùng để mở đầu bài viết", "Trang trí cho câu văn"], 0),
+        q("Khi triển khai một luận điểm, người viết thường cần kết hợp điều gì?", ["Lí lẽ và bằng chứng", "Nhan đề và chữ kí", "Lời chào và lời cảm ơn", "Vần và nhịp"], 0),
+        q("Bằng chứng trong văn bản nghị luận có tác dụng gì?", ["Cụ thể hóa và hỗ trợ cho lí lẽ", "Thay thế mọi lập luận", "Làm đoạn văn dài hơn", "Bộc lộ tiểu sử người viết"], 0),
+        q("Điều gì giúp các luận điểm cùng hướng đến một luận đề thống nhất?", ["Sự liên kết về nội dung và lập luận", "Việc lặp lại nguyên văn một câu", "Số lượng đoạn văn bằng nhau", "Cách dùng nhiều từ khó"], 0),
+        q("Trong một bài nghị luận, luận cứ là gì?", ["Căn cứ gồm lí lẽ và bằng chứng để làm sáng tỏ luận điểm", "Một câu hỏi đặt ở nhan đề", "Phần ghi tên tác giả", "Một hình ảnh có vần"], 0),
+        q("Vì sao cần sắp xếp các luận điểm theo trật tự hợp lí?", ["Để người đọc theo dõi mạch lập luận rõ ràng", "Để mọi đoạn có độ dài giống nhau", "Để tránh nêu luận đề", "Để thay bằng kể chuyện"], 0),
+        q("Một ví dụ phù hợp trong bài nghị luận cần đáp ứng điều gì?", ["Có liên quan và làm sáng tỏ luận điểm", "Càng dài càng tốt", "Không cần liên quan đến vấn đề", "Chỉ cần gây bất ngờ"], 0),
+        q("Câu chuyển đoạn thường có tác dụng gì?", ["Nối ý trước với ý sau", "Thay thế bằng chứng", "Xóa bỏ luận điểm vừa nêu", "Giới thiệu nhân vật trữ tình"], 0),
+        q("Khi phản bác một ý kiến, người viết nên làm gì?", ["Nêu rõ điểm chưa hợp lí và đưa căn cứ", "Chỉ chê người nêu ý kiến", "Lặp lại ý kiến ấy nhiều lần", "Tránh đề cập đến lí do"], 0),
+        q("Cách diễn đạt nào giúp phân biệt luận điểm với bằng chứng?", ["Luận điểm nêu nhận định; bằng chứng cung cấp căn cứ cụ thể", "Luận điểm luôn là số liệu; bằng chứng luôn là nhan đề", "Hai khái niệm không thể phân biệt", "Bằng chứng chỉ xuất hiện ở kết bài"], 0),
+        q("Một lập luận thuyết phục cần tránh lỗi nào?", ["Kết luận không được các căn cứ hỗ trợ", "Dùng từ ngữ rõ nghĩa", "Sắp xếp ý theo trình tự", "Nêu bằng chứng liên quan"], 0),
+        q("Tác dụng của việc giải thích khái niệm trước khi bàn luận là gì?", ["Giúp xác định rõ nội dung vấn đề", "Làm cho luận đề biến mất", "Thay thế phần kết luận", "Khiến bằng chứng không cần thiết"], 0),
+        q("Kết luận của bài nghị luận thường làm nhiệm vụ gì?", ["Khái quát hoặc nhấn mạnh kết quả bàn luận", "Mở ra một vấn đề hoàn toàn không liên quan", "Liệt kê mọi từ đã dùng", "Thay thế toàn bộ phần lập luận"], 0),
+        q("Muốn đánh giá một lập luận, người đọc nên xem xét điều gì?", ["Mối liên hệ giữa luận điểm, lí lẽ và bằng chứng", "Độ dài của từng câu riêng lẻ", "Số lần xuất hiện của tên tác giả", "Hình thức trình bày nhan đề"], 0)
+      ],
+      "Phan Đình Diệu": [
+        q("Trong một văn bản nghị luận, thao tác giải thích thường nhằm mục đích gì?", ["Làm rõ ý nghĩa của khái niệm hoặc nhận định", "Kể lại toàn bộ tiểu sử tác giả", "Thay thế mọi bằng chứng", "Tạo vần cho câu văn"], 0),
+        q("Phép lập luận phân tích giúp người viết làm gì?", ["Chia vấn đề thành các phương diện để xem xét", "Thu hẹp văn bản thành một nhan đề", "Loại bỏ mọi luận điểm", "Chuyển bài nghị luận thành hội thoại"], 0),
+        q("Phép lập luận tổng hợp thường được dùng để làm gì?", ["Rút ra nhận xét chung từ các ý đã phân tích", "Nêu một chi tiết không liên quan", "Thay bằng chứng bằng cảm thán", "Chia đoạn văn thành câu hỏi"], 0),
+        q("Khi dùng thao tác so sánh trong nghị luận, cần chú ý điều gì?", ["Các đối tượng phải có điểm chung phù hợp để đối chiếu", "Hai đối tượng phải hoàn toàn giống nhau", "Không cần nêu tiêu chí so sánh", "Chỉ được so sánh ở câu kết"], 0),
+        q("Thao tác bác bỏ có tác dụng gì trong lập luận?", ["Chỉ ra sự thiếu hợp lí của một ý kiến hoặc cách hiểu", "Kể lại một sự việc theo thời gian", "Miêu tả chi tiết cảnh vật", "Đưa ra nhan đề mới"], 0),
+        q("Dấu hiệu nào cho thấy một luận điểm được triển khai có mạch lạc?", ["Các câu trong đoạn cùng phục vụ một ý chính", "Mỗi câu nói về một chủ đề khác nhau", "Đoạn văn chỉ gồm các câu hỏi", "Không có từ ngữ liên kết"], 0),
+        q("Từ nối như “trước hết”, “hơn nữa”, “cuối cùng” giúp ích thế nào?", ["Báo hiệu trình tự các ý trong lập luận", "Thay thế luận cứ", "Chứng minh mọi ý đều đúng", "Làm thay nhiệm vụ của nhan đề"], 0),
+        q("Khi đưa số liệu vào một lập luận, người viết cần làm gì?", ["Bảo đảm số liệu liên quan và được trình bày chính xác", "Chọn số liệu bất kì cho sinh động", "Không cần giải thích số liệu nói lên điều gì", "Dùng số liệu thay cho luận đề"], 0),
+        q("Một ý kiến đối lập được đưa vào bài nghị luận chủ yếu để làm gì?", ["Đối thoại với cách nhìn khác và làm rõ lập trường", "Làm bài viết mất phương hướng", "Thay toàn bộ phần mở bài", "Kéo dài văn bản mà không thêm ý"], 0),
+        q("Câu hỏi tu từ trong văn bản nghị luận thường có thể dùng để làm gì?", ["Gợi suy nghĩ và nhấn mạnh vấn đề", "Cung cấp số liệu chính xác", "Thay thế tất cả các luận cứ", "Báo hiệu lời thoại bắt buộc"], 0),
+        q("Điều gì giúp tránh suy luận vội vàng trong bài nghị luận?", ["Kiểm tra xem căn cứ có đủ để đi đến kết luận hay không", "Dùng nhiều dấu chấm than", "Lặp lại kết luận ở mọi đoạn", "Bỏ qua các trường hợp liên quan"], 0),
+        q("Một luận điểm quá rộng thường gây khó khăn gì?", ["Khó triển khai thành các lí lẽ và bằng chứng cụ thể", "Khiến bài viết tự động thuyết phục hơn", "Làm cho luận đề không còn cần thiết", "Bảo đảm mọi đoạn đều ngắn"], 0),
+        q("Vai trò của nhan đề đối với bài nghị luận là gì?", ["Gợi hoặc xác định vấn đề trọng tâm", "Thay thế toàn bộ các luận điểm", "Chứng minh kết luận bằng số liệu", "Cho biết mọi bằng chứng trong bài"], 0),
+        q("Vì sao cần dùng chính xác các khái niệm trong lập luận?", ["Để tránh nhập nhằng về nội dung đang bàn", "Để câu văn luôn dài hơn", "Để không cần liên kết các ý", "Để biến mọi nhận định thành sự thật"], 0),
+        q("Khi đọc một lập luận, dấu hiệu nào cho thấy kết luận được hỗ trợ tốt?", ["Kết luận phù hợp với các lí lẽ và bằng chứng đã nêu", "Kết luận xuất hiện càng sớm càng tốt", "Kết luận có nhiều từ ngữ cảm thán", "Kết luận lặp lại nhan đề nguyên văn"], 0)
+      ],
+      "Nguyễn Đình Thi": [
+        q("Một đoạn văn nghị luận thường có cấu trúc cơ bản nào?", ["Câu nêu ý chính và các câu triển khai", "Nhan đề, mục lục và phụ lục", "Nhân vật, biến cố và cao trào", "Vần, niêm và đối"], 0),
+        q("Trong bài nghị luận, mở bài thường có nhiệm vụ gì?", ["Dẫn vào và nêu vấn đề cần bàn luận", "Trình bày toàn bộ bằng chứng chi tiết", "Bác bỏ mọi ý kiến khác", "Kể kết thúc của một truyện"], 0),
+        q("Một nhận định được nêu trong văn bản nghị luận cần được làm rõ bằng cách nào?", ["Giải thích và đưa ra căn cứ phù hợp", "Chỉ nhắc lại bằng từ đồng nghĩa", "Đặt ở cuối bài mà không phân tích", "Đổi thành câu cảm thán"], 0),
+        q("Nếu các câu trong một đoạn cùng triển khai một luận điểm, đoạn văn có đặc điểm gì?", ["Có tính thống nhất về chủ đề", "Không có nội dung chính", "Chỉ có chức năng miêu tả", "Không thể chứa bằng chứng"], 0),
+        q("Trật tự lập luận có thể được tổ chức theo cách nào?", ["Theo quan hệ nguyên nhân – kết quả hoặc từ khái quát đến cụ thể", "Chỉ theo thứ tự chữ cái", "Chỉ theo độ dài câu", "Không cần theo bất cứ quan hệ nào"], 0),
+        q("Một dẫn chứng văn học trong nghị luận nên được sử dụng ra sao?", ["Chọn lọc và gắn rõ với ý đang chứng minh", "Liệt kê càng nhiều càng tốt mà không giải thích", "Dùng để thay cho luận đề", "Đặt vào bài dù không liên quan"], 0),
+        q("Sự khác nhau giữa nêu vấn đề và chứng minh vấn đề là gì?", ["Nêu vấn đề xác định điều cần bàn; chứng minh dùng căn cứ để làm rõ", "Hai việc luôn hoàn toàn giống nhau", "Nêu vấn đề chỉ dùng ở kết bài", "Chứng minh không cần lí lẽ"], 0),
+        q("Khi một đoạn chuyển từ nhận xét sang dẫn chứng, điều gì làm mạch văn rõ hơn?", ["Cách nối cho thấy dẫn chứng minh họa nhận xét nào", "Thêm một câu không liên quan", "Lặp lại nguyên văn nhan đề", "Bỏ phần nhận xét"], 0),
+        q("Trong nghị luận, khái quát hóa từ nhiều dẫn chứng cần tránh điều gì?", ["Rút ra kết luận vượt quá phạm vi của dẫn chứng", "Nêu rõ điểm chung của các dẫn chứng", "Giải thích căn cứ của kết luận", "Giới hạn nhận định cho phù hợp"], 0),
+        q("Cách nào giúp một bài nghị luận có giọng điệu khách quan hơn?", ["Phân biệt rõ sự kiện, lí lẽ và ý kiến", "Dùng lời khẳng định tuyệt đối cho mọi vấn đề", "Gán động cơ cho người bất đồng", "Thay căn cứ bằng lời khen"], 0),
+        q("Từ ngữ biểu thị quan hệ nhượng bộ như “tuy nhiên” có tác dụng gì?", ["Báo hiệu sự chuyển hướng hoặc bổ sung góc nhìn", "Báo hiệu đoạn văn đã kết thúc chắc chắn", "Thay thế luận cứ", "Giới thiệu nhân vật mới"], 0),
+        q("Trong bài nghị luận, việc lặp lại một từ khóa có chủ đích có thể giúp gì?", ["Duy trì sự tập trung vào vấn đề trọng tâm", "Bảo đảm lập luận đúng mà không cần căn cứ", "Thay thế mọi từ nối", "Làm cho các luận điểm khác nhau biến mất"], 0),
+        q("Điều gì khiến một ví dụ trở thành bằng chứng yếu?", ["Ví dụ không liên quan hoặc không đủ để hỗ trợ nhận định", "Ví dụ được giải thích rõ", "Ví dụ tiêu biểu cho luận điểm", "Ví dụ có nguồn gốc xác định"], 0),
+        q("Một câu khẳng định mạnh trong bài nghị luận có cần căn cứ không?", ["Có, để người đọc thấy cơ sở của nhận định", "Không, vì câu khẳng định tự nó là bằng chứng", "Chỉ cần căn cứ nếu câu dài", "Chỉ cần căn cứ ở nhan đề"], 0),
+        q("Khi rà soát bài nghị luận, câu hỏi nào giúp kiểm tra tính logic?", ["Kết luận này có thực sự theo sau các căn cứ đã nêu không?", "Các câu có cùng số từ không?", "Có đủ dấu chấm than không?", "Nhan đề có dài hơn kết bài không?"], 0)
+      ],
+      "Nguyễn Trần Bạt": [
+        q("Trong văn bản nghị luận, lập trường của người viết thể hiện rõ nhất ở đâu?", ["Qua cách nêu và bảo vệ các luận điểm", "Qua số lượng dấu câu", "Qua độ dài nhan đề", "Qua cách xuống dòng ngẫu nhiên"], 0),
+        q("Một luận điểm có sức thuyết phục thường cần đặc điểm nào?", ["Rõ ràng và có thể được hỗ trợ bằng lí lẽ, bằng chứng", "Mơ hồ để bao quát mọi ý", "Không liên quan đến luận đề", "Chỉ gồm một câu hỏi"], 0),
+        q("Việc thừa nhận một giới hạn trong lập luận có thể giúp gì?", ["Làm nhận định cân bằng và đáng tin cậy hơn", "Khiến mọi bằng chứng trở nên vô ích", "Thay thế phần kết luận", "Chứng minh người viết không có lập trường"], 0),
+        q("Thế nào là một khái quát có giới hạn phù hợp?", ["Nhận định không vượt quá những gì căn cứ cho phép", "Kết luận về mọi trường hợp từ một ví dụ", "Dùng từ tuyệt đối cho vấn đề phức tạp", "Bỏ qua các dữ kiện trái chiều"], 0),
+        q("Khi giải thích một ý kiến, người viết nên tránh điều gì?", ["Diễn giải sai hoặc làm lệch nội dung ý kiến", "Nêu rõ các khái niệm quan trọng", "Dùng lời văn dễ hiểu", "Làm rõ phạm vi nhận định"], 0),
+        q("Trong tranh luận, cách phản hồi nào tập trung vào vấn đề?", ["Xem xét lí lẽ và căn cứ của ý kiến đối lập", "Công kích đặc điểm cá nhân của người nói", "Đổi sang một chủ đề không liên quan", "Khẳng định đối phương sai mà không giải thích"], 0),
+        q("Một dẫn chứng đáng tin cậy cần có phẩm chất nào?", ["Có nguồn gốc rõ và phù hợp với luận điểm", "Không cần xác định xuất xứ", "Chỉ gây ấn tượng mạnh", "Luôn là một câu chuyện dài"], 0),
+        q("Khi người viết đưa ra nhận định khái quát, cách nào giúp người đọc theo dõi căn cứ?", ["Nêu các lí lẽ hoặc dẫn chứng dẫn đến nhận định đó", "Chỉ lặp lại nhận định nhiều lần", "Ẩn toàn bộ quá trình suy luận", "Đổi nhận định thành lời hỏi"], 0),
+        q("Tác dụng của việc phân biệt nguyên nhân với biểu hiện là gì?", ["Giúp lập luận không nhầm hiện tượng với căn cứ giải thích", "Làm cho mọi kết luận đúng ngay lập tức", "Thay thế việc nêu luận đề", "Giúp bỏ qua mối liên hệ giữa các ý"], 0),
+        q("Một văn bản nghị luận có thể kết hợp những phương thức nào để trình bày?", ["Giải thích, phân tích, chứng minh và bác bỏ", "Chỉ có miêu tả cảnh vật", "Chỉ có lời thoại nhân vật", "Chỉ có danh sách từ ngữ"], 0),
+        q("Khi dùng phép lập luận quy nạp, người viết thường đi theo hướng nào?", ["Từ các trường hợp hoặc căn cứ cụ thể đến nhận định chung", "Từ kết luận đến nhan đề", "Từ câu hỏi đến lời chào", "Từ ý kiến chung đến các vần thơ"], 0),
+        q("Khi dùng phép lập luận diễn dịch, người viết thường đi theo hướng nào?", ["Từ nhận định chung đến các ý triển khai cụ thể", "Từ nhiều ví dụ đến một kết luận chung", "Từ kết bài đến nhan đề", "Từ bằng chứng đến một câu hỏi không liên quan"], 0),
+        q("Điều gì tạo nên sự cân đối giữa các phần của bài nghị luận?", ["Mỗi phần có dung lượng phù hợp với nhiệm vụ lập luận", "Mọi phần phải có số câu bằng nhau", "Phần kết bài phải dài nhất", "Mỗi phần chỉ được có một câu"], 0),
+        q("Một kết luận thận trọng thường có đặc điểm nào?", ["Mức độ khẳng định phù hợp với độ mạnh của căn cứ", "Khẳng định tuyệt đối dù thiếu dữ kiện", "Không liên quan đến phần bàn luận", "Chỉ nhắc lại một ví dụ"], 0),
+        q("Khi biên tập bài nghị luận, nên sửa gì nếu một câu không hỗ trợ ý chính của đoạn?", ["Lược bỏ hoặc chuyển câu đến vị trí phù hợp", "Giữ nguyên vì đoạn càng dài càng tốt", "Thay mọi câu khác bằng câu đó", "Đưa câu lên nhan đề"], 0)
+      ],
+      "Đoàn Thị Điểm": [
+        q("Hải khẩu linh từ thường được xếp vào thể loại nào?", ["Truyện truyền kỳ", "Truyện thơ Nôm", "Ký sự du hành", "Ngụ ngôn"], 0),
+        q("Sự đan xen giữa những điều quen thuộc và kỳ lạ trong Hải khẩu linh từ tạo nên đặc điểm nào?", ["Hai lớp thực và ảo cùng hiện diện", "Mạch kể chỉ dựa trên đối thoại", "Cốt truyện hoàn toàn phi thời gian", "Tác phẩm chỉ miêu tả sinh hoạt thường nhật"], 0),
+        q("Khi đọc yếu tố kỳ ảo trong Hải khẩu linh từ, nên hiểu nó chủ yếu là gì?", ["Một phương tiện mở rộng ý nghĩa câu chuyện", "Chi tiết trang trí không liên quan đến chủ đề", "Bằng chứng để đọc tác phẩm như văn bản lịch sử thuần túy", "Cách thay thế hoàn toàn cho nhân vật"], 0),
+        q("Sự kết hợp giữa bối cảnh có vẻ xác thực và chuyện lạ trong truyện truyền kỳ thường có tác dụng gì?", ["Khiến điều kỳ lạ trở nên gần gũi, đáng suy ngẫm", "Xóa bỏ mọi liên hệ với đời sống", "Biến câu chuyện thành văn bản hướng dẫn", "Làm cho người kể không cần dẫn dắt"], 0),
+        q("Trong cách đọc Hải khẩu linh từ, chi tiết siêu nhiên có thể giúp người đọc chú ý đến điều gì?", ["Những quan niệm và giá trị được gửi gắm qua câu chuyện", "Chỉ kỹ thuật miêu tả phong cảnh", "Niên đại sáng tác chính xác", "Các quy tắc gieo vần"], 0),
+        q("Vì sao không nên xem yếu tố kỳ ảo trong truyện truyền kỳ chỉ là chuyện lạ để gây tò mò?", ["Vì nó còn góp phần tạo nghĩa và dẫn dắt cách hiểu", "Vì nó luôn làm cốt truyện mất logic", "Vì nó chỉ xuất hiện trong nhan đề", "Vì nó khiến tác phẩm thuộc thể loại thơ"], 0),
+        q("Sự xuất hiện của một biến cố khác thường trong không gian đời sống quen thuộc thường tạo hiệu quả nào?", ["Làm ranh giới giữa bình thường và huyền ảo trở nên đáng chú ý", "Khiến câu chuyện không còn nhân vật", "Chuyển tác phẩm thành văn bản khoa học", "Loại bỏ mọi khả năng diễn giải"], 0),
+        q("Khi một truyện truyền kỳ dựa vào tín ngưỡng dân gian, người đọc nên lưu ý điều gì?", ["Tín ngưỡng góp phần định hình thế giới nghệ thuật", "Mọi chi tiết đều phải được hiểu theo nghĩa đen", "Tín ngưỡng chỉ dùng để xác định tác giả", "Tác phẩm không thể có ý nghĩa xã hội"], 0),
+        q("Hiệu quả của giọng kể nghiêm trang khi thuật lại chuyện kỳ lạ thường là gì?", ["Tạo cảm giác câu chuyện có sức thuyết phục riêng", "Báo hiệu rằng văn bản là một bài thơ trào phúng", "Làm biến mất yếu tố kỳ ảo", "Khiến người đọc không thể nhận ra cốt truyện"], 0),
+        q("Một cách tiếp cận phù hợp với hình ảnh không gian linh thiêng trong Hải khẩu linh từ là gì?", ["Xem không gian ấy như nơi gợi mở sự giao thoa giữa các thế giới", "Chỉ coi đó là phông nền không có ý nghĩa", "Đọc nó như một chỉ dẫn địa lý hiện đại", "Bỏ qua vai trò của không gian trong truyện"], 0),
+        q("Khi trong truyện truyền kỳ xuất hiện nhân vật hoặc sự việc vượt khỏi quy luật thường ngày, người đọc có thể đặt câu hỏi nào?", ["Chi tiết ấy góp phần làm sáng rõ chủ đề ra sao?", "Tác giả sử dụng bao nhiêu dòng thơ?", "Văn bản có thể thay bằng bảng biểu nào?", "Nhân vật ấy thuộc loại hình ngữ pháp nào?"], 0),
+        q("Yếu tố kỳ ảo có thể khiến người đọc nhìn nhận một sự việc trong truyện như thế nào?", ["Vừa theo diễn biến câu chuyện, vừa qua tầng nghĩa biểu tượng", "Chỉ như một sự kiện có thể kiểm chứng bằng tư liệu", "Chỉ như phần phụ không liên quan đến diễn biến", "Như một quy tắc ngôn ngữ"], 0),
+        q("Sự đan xen thực-ảo trong Hải khẩu linh từ đòi hỏi người đọc điều gì?", ["Chấp nhận nhiều lớp nghĩa khi diễn giải", "Chỉ tìm một cách hiểu duy nhất theo nghĩa đen", "Tách mọi chi tiết khỏi mạch truyện", "Chỉ quan tâm đến hình thức câu"], 0),
+        q("Trong truyện truyền kỳ, một chi tiết huyền ảo có thể làm thay đổi nhịp kể bằng cách nào?", ["Tạo bước ngoặt hoặc mở ra hướng phát triển mới", "Xóa bỏ hoàn toàn trình tự sự việc", "Thay mọi hành động bằng lời bình", "Kết thúc câu chuyện ngay từ đầu"], 0),
+        q("Khi phân tích Hải khẩu linh từ trong chủ đề yếu tố kỳ ảo, câu hỏi nào hữu ích nhất?", ["Điều khác thường giúp tác phẩm gợi suy nghĩ gì?", "Có thể loại bỏ mọi chi tiết lạ mà không đổi ý nghĩa không?", "Tác phẩm có bao nhiêu đoạn văn giống nhau?", "Nhân vật nào có tên dài nhất?"], 0)
+      ],
+      "Nguyễn Huy Thiệp": [
+        q("Nhan đề Muối của rừng gợi cách đọc nào ngoài nghĩa tả thực?", ["Một hình ảnh có thể mang ý nghĩa biểu tượng", "Một lời chỉ dẫn về cách nấu ăn", "Tên một văn bản hành chính", "Một thuật ngữ về cấu trúc câu"], 0),
+        q("Cách kể tập trung theo sát trải nghiệm của một nhân vật thường giúp truyện đạt hiệu quả nào?", ["Người đọc nhận ra sự việc qua giới hạn cảm nhận của nhân vật", "Người đọc biết trước mọi bí mật của cốt truyện", "Mạch kể không cần sự kiện", "Nhân vật không còn vai trò trong truyện"], 0),
+        q("Một đặc điểm thường được chú ý trong lối viết của Muối của rừng là gì?", ["Lời văn cô đọng, gợi nhiều hơn giải thích", "Lời kể dài như một bản biên niên đầy số liệu", "Toàn bộ tác phẩm được viết bằng thơ luật", "Mỗi sự việc đều có lời giải thích duy nhất"], 0),
+        q("Nhịp truyện được đẩy lên qua chuỗi hành động thường tạo tác dụng nào?", ["Duy trì căng thẳng và kéo người đọc theo diễn biến", "Làm cho cốt truyện không có biến chuyển", "Chuyển trọng tâm sang lập luận khoa học", "Loại bỏ vai trò của không gian"], 0),
+        q("Sự tương phản giữa vẻ ngoài bình thản của lời kể và những tình huống căng thẳng có thể tạo nên điều gì?", ["Sắc thái mỉa mai hoặc bất an", "Một kết cấu thơ có vần", "Giọng điệu hoàn toàn sử thi", "Một lời giải thích mang tính từ điển"], 0),
+        q("Khi kết thúc truyện để lại dư âm thay vì giải thích mọi điều, tác phẩm thường khuyến khích người đọc làm gì?", ["Tự suy ngẫm và hoàn thiện cách diễn giải", "Bỏ qua các chi tiết trước đó", "Tìm một đáp án duy nhất có sẵn", "Chuyển sang phân tích niêm luật"], 0),
+        q("Cách xây dựng nhân vật qua lựa chọn và hành động giúp người đọc nhận biết điều gì?", ["Tính cách được bộc lộ trong tình huống cụ thể", "Tiểu sử đầy đủ của nhân vật ngay từ đầu", "Mọi suy nghĩ đều được người kể giải thích", "Nhân vật không cần có động cơ"], 0),
+        q("Một chi tiết được nhắc lại hoặc gây ấn tượng mạnh trong truyện có thể đảm nhiệm vai trò nào?", ["Tạo mô-típ và liên kết các lớp nghĩa", "Thay thế toàn bộ cốt truyện", "Chứng minh tác phẩm thuộc thể loại ký", "Làm cho nhân vật không còn hành động"], 0),
+        q("Tác dụng của việc hạn chế lời bình trực tiếp trong một truyện giàu tình huống là gì?", ["Để người đọc tự đánh giá qua sự việc và hành động", "Khiến câu chuyện không thể có chủ đề", "Biến lời kể thành lời thoại hoàn toàn", "Xóa bỏ mối liên hệ giữa các sự kiện"], 0),
+        q("Khi nhiều cách đánh giá một nhân vật đều có cơ sở, điều đó thường cho thấy nhân vật được xây dựng như thế nào?", ["Có độ phức tạp, không dễ quy về một nhãn duy nhất", "Chỉ có một nét tính cách cố định", "Không liên quan đến diễn biến truyện", "Được dùng như một khái niệm trừu tượng"], 0),
+        q("Không gian rừng trong Muối của rừng có thể được phân tích như thế nào ngoài vai trò bối cảnh?", ["Một không gian nghệ thuật góp phần tạo sắc thái và ý nghĩa", "Một địa danh chỉ dùng để ghi tọa độ", "Một yếu tố không liên quan đến nhịp truyện", "Một dấu hiệu bắt buộc của truyện cổ tích"], 0),
+        q("Sự thay đổi nhịp độ giữa các đoạn kể thường giúp nhà văn làm gì?", ["Điều chỉnh mức độ căng thẳng và chú ý của người đọc", "Loại bỏ quan hệ nhân quả giữa các sự việc", "Biến truyện thành một bài nghị luận", "Bảo đảm mỗi đoạn có cùng cảm xúc"], 0),
+        q("Khi một truyện không đưa ra lời phán xét trực tiếp, người đọc nên dựa vào đâu để hiểu thái độ tác phẩm?", ["Cách sắp xếp tình huống, chi tiết và kết thúc", "Số lượng dấu câu trong văn bản", "Độ dài tên nhân vật", "Thể thức trình bày trang sách"], 0),
+        q("Việc chọn một nhan đề giàu liên tưởng như Muối của rừng thường có tác dụng gì?", ["Gợi chủ đề và tạo dư vang cho toàn bộ câu chuyện", "Tóm tắt chính xác mọi sự kiện theo trình tự", "Thay thế hoàn toàn phần kết", "Xác định ngôi kể một cách trực tiếp"], 0),
+        q("Một lối kết hợp giữa chi tiết đời thường và hàm ý rộng hơn thường khiến câu chuyện trở nên thế nào?", ["Gần gũi ở bề mặt nhưng còn nhiều tầng để suy ngẫm", "Chỉ có thể hiểu như văn bản thông tin", "Không có khả năng tạo biểu tượng", "Hoàn toàn phụ thuộc vào lời chú giải"], 0)
+      ],
+      "Lưu Sơn Minh": [
+        q("Nhan đề Bến trần gian gợi một hình ảnh có thể được hiểu như thế nào?", ["Một điểm dừng hoặc ngưỡng chuyển tiếp giàu ý nghĩa", "Một thuật ngữ về cách gieo vần", "Tên một thể loại sân khấu", "Một chỉ dẫn về kỹ thuật kể chuyện"], 0),
+        q("Khi đọc Bến trần gian theo chủ đề yếu tố kỳ ảo, điều gì nên được chú ý?", ["Cách chi tiết khác thường tham gia tạo nghĩa cho câu chuyện", "Chỉ số lượng nhân vật xuất hiện", "Mức độ dài ngắn của từng câu", "Việc văn bản có bao nhiêu dấu phẩy"], 0),
+        q("Yếu tố kỳ ảo trong một truyện kể thường giúp tạo nên điều gì?", ["Sự giao thoa giữa kinh nghiệm đời thường và điều vượt khỏi thường nghiệm", "Một bản tường thuật hoàn toàn khách quan", "Một chuỗi sự việc không có liên hệ", "Một lối viết chỉ dựa vào thuật ngữ"], 0),
+        q("Hình ảnh “bến” trong nhan đề có thể gợi hướng diễn giải nào?", ["Sự gặp gỡ, dừng lại hoặc chuyển tiếp", "Sự kết thúc của mọi khả năng biểu đạt", "Một công thức tạo vần", "Một danh mục nhân vật"], 0),
+        q("Khi một truyện tạo cảm giác ranh giới giữa hai cõi trở nên mờ nhạt, người đọc thường được mời gọi suy ngẫm về điều gì?", ["Giới hạn của nhận thức và trải nghiệm con người", "Cách phân loại từ loại", "Quy tắc trình bày lời thoại", "Thứ tự các mục trong văn bản"], 0),
+        q("Một chi tiết kỳ ảo xuất hiện trong mạch kể có thể đảm nhiệm vai trò nào?", ["Tạo nút thắt, chuyển hướng hoặc mở rộng tầng nghĩa", "Chỉ làm tăng số lượng câu văn", "Thay thế toàn bộ nhân vật", "Loại bỏ mọi liên hệ với nhan đề"], 0),
+        q("Nếu người kể thuật lại chuyện lạ bằng giọng bình tĩnh, hiệu quả có thể là gì?", ["Làm cho điều kỳ ảo hòa vào thế giới truyện", "Báo hiệu rằng câu chuyện không có sự kiện", "Biến văn bản thành một bài diễn thuyết", "Khiến mọi chi tiết trở thành lời thoại"], 0),
+        q("Khi một tác phẩm không phân định rạch ròi giữa thực và ảo, cách đọc nào phù hợp hơn?", ["Cân nhắc đồng thời diễn biến và ý nghĩa biểu tượng", "Loại bỏ mọi chi tiết vượt thường nghiệm", "Chỉ tìm thông tin tiểu sử tác giả", "Đọc từng câu như một định nghĩa"], 0),
+        q("Một không gian mang tính ngưỡng trong truyện thường có ý nghĩa gì?", ["Gợi sự chuyển tiếp giữa những trạng thái hoặc thế giới khác nhau", "Chỉ cung cấp thông tin về thời tiết", "Làm cho cốt truyện mất đi điểm nhìn", "Xác định thể thơ của tác phẩm"], 0),
+        q("Điều gì giúp yếu tố kỳ ảo không trở thành chi tiết rời rạc trong truyện?", ["Nó gắn với tình huống, chủ đề hoặc tâm thế nhân vật", "Nó xuất hiện càng nhiều càng tốt", "Nó luôn được giải thích theo khoa học", "Nó không liên quan đến diễn biến"], 0),
+        q("Khi phân tích một cuộc gặp gỡ khác thường trong Bến trần gian, câu hỏi nào hữu ích?", ["Cuộc gặp ấy làm thay đổi cách hiểu câu chuyện ra sao?", "Có bao nhiêu chữ cái trong nhan đề?", "Tác phẩm có thể đổi sang thể thơ nào?", "Mỗi nhân vật xuất hiện trong bao nhiêu trang?"], 0),
+        q("Sự bất định quanh một sự việc kỳ lạ có thể tạo hiệu quả đọc nào?", ["Khuyến khích người đọc tự cân nhắc các cách lý giải", "Buộc mọi người đọc phải chọn cùng một đáp án", "Làm biến mất vai trò của người kể", "Khiến nhan đề không còn được chú ý"], 0),
+        q("Trong truyện kể, chi tiết kỳ ảo có thể góp phần khắc họa nhân vật bằng cách nào?", ["Đặt nhân vật trước một trải nghiệm làm lộ ra suy nghĩ hoặc lựa chọn", "Thay thế mọi hành động của nhân vật", "Xóa bỏ sự khác biệt giữa các nhân vật", "Chỉ cung cấp thông tin về ngoại hình"], 0),
+        q("Một nhan đề giàu tính gợi mở như Bến trần gian thường tạo tác dụng gì đối với người đọc?", ["Định hướng liên tưởng mà không khép lại mọi cách hiểu", "Giải thích sẵn toàn bộ cốt truyện", "Xác định chính xác người kể chuyện", "Thay thế phần mở đầu của tác phẩm"], 0),
+        q("Khi đọc yếu tố kỳ ảo trong Bến trần gian, cách diễn giải nào thận trọng nhất?", ["Dựa vào chi tiết và mạch truyện trước khi khái quát ý nghĩa", "Coi mọi sự việc lạ là sự kiện có thật ngoài đời", "Chỉ dựa vào nhan đề để kết luận toàn bộ chủ đề", "Bỏ qua vai trò của người kể và điểm nhìn"], 0)
+      ],
+      "Nikolai Gogol": [
+        q("Trong Nhân vật quan trọng, Osip là ai?", ["Người hầu của Khlestakov", "Người thân của viên thị trưởng", "Bạn học của Bobchinsky", "Thầy giáo của Marya"], 0),
+        q("Anna Andreyevna có quan hệ gì với Marya Antonovna?", ["Là mẹ của Marya", "Là chị của Marya", "Là dì của Marya", "Là bạn của Marya"], 0),
+        q("Bobchinsky và Dobchinsky thường được khắc họa như thế nào?", ["Hay đi cùng nhau và thích kể chuyện", "Là hai người hầu của Osip", "Là cha con trong gia đình thị trưởng", "Là hai viên chức phụ trách trường học"], 0),
+        q("Trong vở Quan thanh tra, Shpekin làm nghề gì?", ["Nhân viên bưu điện", "Thẩm phán", "Bác sĩ", "Giáo viên"], 0),
+        q("Nhân vật nào là vợ của viên thị trưởng?", ["Anna Andreyevna", "Marya Antonovna", "Osip", "Khlopov"], 0),
+        q("Marya Antonovna là ai trong gia đình viên thị trưởng?", ["Con gái", "Vợ", "Em gái", "Chị họ"], 0),
+        q("Một tác dụng của việc các nhân vật thường xuyên ngắt lời nhau trong hài kịch là gì?", ["Tạo nhịp đối thoại nhanh và gây cười", "Làm câu chuyện chuyển thành độc thoại", "Xóa bỏ xung đột giữa các nhân vật", "Khiến thời gian sân khấu dừng lại"], 0),
+        q("Khi một nhân vật nói quá tự tin nhưng hành động lại vụng về, hiệu quả hài thường đến từ đâu?", ["Sự tương phản giữa lời nói và hành động", "Sự trùng khớp hoàn toàn giữa lời nói và hành động", "Việc thiếu nhân vật phụ", "Việc câu chuyện không có đối thoại"], 0),
+        q("Trong một cảnh hài, phản ứng nghiêm trang quá mức trước một việc nhỏ thường tạo ra điều gì?", ["Sự tương phản gây buồn cười", "Không khí sử thi", "Lời kể của người dẫn chuyện", "Một đoạn độc thoại trữ tình"], 0),
+        q("Ở cuối Quan thanh tra, các nhân vật được giữ bất động trong một khoảnh khắc sân khấu. Cách kết thúc ấy thường được gọi là gì?", ["Hoạt cảnh câm", "Hồi tưởng", "Độc thoại nội tâm", "Cảnh chuyển địa điểm"], 0),
+        q("Vì sao một nhân vật có thể trở nên buồn cười dù không chủ ý gây cười?", ["Vì khán giả nhận ra sự lệch lạc giữa điều nhân vật tin và thực tế", "Vì nhân vật luôn kể chuyện cười", "Vì nhân vật không xuất hiện trên sân khấu", "Vì nhân vật chỉ nói bằng lời dẫn"], 0),
+        q("Trong phân tích một cảnh hài, “nhịp gây cười” chủ yếu liên quan đến điều gì?", ["Thời điểm và tốc độ của lời nói, hành động", "Số lượng phông màn được sử dụng", "Thứ tự tên tác giả trên áp phích", "Độ dài của phần giới thiệu tác phẩm"], 0),
+        q("Chi tiết nào giúp khán giả hiểu tính cách nhân vật trên sân khấu mà không cần lời giải thích dài?", ["Cử chỉ và cách ứng xử", "Danh sách cảnh trí", "Tên chương sách", "Lời bình ngoài vở"], 0),
+        q("Nếu khán giả biết một thông tin mà nhân vật chưa biết, tình huống ấy có thể tạo nên thủ pháp nào?", ["Hài kịch trớ trêu", "Tả cảnh ngụ tình", "Độc thoại trữ tình", "Kết cấu vòng tròn"], 0),
+        q("Trong hài kịch, một sự hiểu lầm thường có tác dụng gì đối với diễn biến?", ["Làm tình huống rắc rối thêm trước khi được tháo gỡ", "Chấm dứt mọi hành động ngay từ đầu", "Thay thế toàn bộ nhân vật bằng người kể chuyện", "Biến đối thoại thành lời miêu tả phong cảnh"], 0)
+      ],
+      "Lộng Chương": [
+        q("Khi đọc Giấu của như một vở kịch, đâu là phương tiện trực tiếp nhất để nhân vật bộc lộ suy nghĩ với nhau?", ["Lời thoại", "Chú thích cuối trang", "Lời tựa của nhà xuất bản", "Mục lục"], 0),
+        q("Trong một cảnh diễn, chỉ dẫn như “nhìn quanh” hoặc “khựng lại” thuộc loại thông tin nào?", ["Chỉ dẫn hành động sân khấu", "Lời thoại của nhân vật", "Lời giới thiệu tác giả", "Ghi chú về thể loại thơ"], 0),
+        q("Một cảnh kịch thường trở nên sinh động hơn khi lời thoại gắn với điều gì?", ["Hành động cụ thể của nhân vật", "Lời bình dài của người đọc", "Phần tóm tắt ngoài vở", "Danh sách các chương"], 0),
+        q("Nếu một nhân vật cố giữ bình tĩnh nhưng liên tục để lộ sự lúng túng, yếu tố nào tạo tiếng cười?", ["Sự trái ngược giữa vẻ ngoài và biểu hiện", "Sự đồng nhất giữa mọi nhân vật", "Việc thiếu hành động sân khấu", "Sự vắng mặt của đối thoại"], 0),
+        q("Trong một màn hài, việc lặp lại một câu nói với ý nghĩa ngày càng khác thường có thể tạo ra hiệu quả gì?", ["Tăng dần sự hài hước", "Xóa bỏ nhịp điệu của cảnh", "Chuyển vở kịch thành bài thơ", "Loại bỏ mâu thuẫn chính"], 0),
+        q("Khi một nhân vật trả lời lạc đề trước câu hỏi đơn giản, khán giả thường cảm nhận điều gì?", ["Sự lệch pha gây cười", "Một đoạn tả cảnh", "Sự chuyển đổi người kể", "Một kết thúc có hậu"], 0),
+        q("Trong Giấu của, điều gì giúp khán giả theo dõi mâu thuẫn giữa các nhân vật trên sân khấu?", ["Mục đích và hành động của từng nhân vật", "Số trang của bản in", "Tiểu sử dài của tác giả", "Tên gọi của từng hồi"], 0),
+        q("Một nhân vật bất ngờ thay đổi thái độ ngay giữa cuộc đối thoại có thể làm nổi bật điều gì?", ["Sự biến chuyển tâm lý hoặc tình thế", "Sự thay đổi thể loại của tác phẩm", "Việc sân khấu không cần diễn viên", "Sự vắng mặt của xung đột"], 0),
+        q("Trong hài kịch, một khoảng ngừng đúng lúc trước khi nhân vật đáp lời có thể giúp gì?", ["Nhấn mạnh sự ngập ngừng và tạo nhịp gây cười", "Thay thế toàn bộ lời thoại", "Giải thích tiểu sử tác giả", "Chuyển cảnh mà không cần chỉ dẫn"], 0),
+        q("Khi phân tích lời thoại của một nhân vật, câu hỏi nào phù hợp nhất?", ["Cách nói bộc lộ tính cách ra sao?", "Tác giả sinh vào ngày nào?", "Bản in có bao nhiêu trang?", "Sân khấu thuộc tỉnh nào?"], 0),
+        q("Một tình huống hài thường phát triển thế nào để giữ sự chú ý của người xem?", ["Mâu thuẫn được đẩy lên rồi dẫn tới một bước ngoặt", "Mọi vấn đề được giải quyết trước khi cảnh bắt đầu", "Nhân vật ngừng hành động ở giữa vở", "Người kể chuyện tóm tắt thay toàn bộ diễn biến"], 0),
+        q("Vai trò của nhân vật phụ trong một cảnh hài có thể là gì?", ["Làm nổi bật hoặc khuấy động mâu thuẫn", "Thay thế hoàn toàn chủ đề của vở", "Ngăn khán giả nhận biết nhân vật chính", "Xóa bỏ mọi tương tác trên sân khấu"], 0),
+        q("Nếu cử chỉ của nhân vật trái ngược với lời họ nói, khán giả có thể nhận ra điều gì?", ["Sự mâu thuẫn tạo nên sắc thái hài", "Một đoạn chuyển sang thơ", "Lời kể của tác giả ngoài vở", "Sự kết thúc của toàn bộ câu chuyện"], 0),
+        q("Vì sao diễn viên cần chú ý đến nhịp điệu khi thể hiện một cảnh hài?", ["Nhịp điệu ảnh hưởng đến sự bất ngờ và hiệu quả gây cười", "Nhịp điệu quyết định tên tác phẩm", "Nhịp điệu thay thế mọi chỉ dẫn sân khấu", "Nhịp điệu làm mất vai trò của lời thoại"], 0),
+        q("Khi một cảnh kết thúc bằng một phát hiện bất ngờ, tác dụng thường thấy là gì?", ["Tạo điểm nhấn cho cảnh và mở ra diễn biến tiếp theo", "Xóa bỏ toàn bộ hành động trước đó", "Biến cảnh kịch thành lời tựa", "Khiến nhân vật không cần đối thoại ở các cảnh sau"], 0)
+      ],
+      "Bô-mác-se (Beaumarchais)": [
+        q("Trong Cẩn thận hão, Figaro làm nghề gì?", ["Thợ cạo", "Thẩm phán", "Thuyền trưởng", "Thầy thuốc"], 0),
+        q("Rosine là người được Bá tước Almaviva tìm cách chinh phục. Ai là người giám hộ của nàng?", ["Bartolo", "Figaro", "Osip", "Shpekin"], 0),
+        q("Figaro giúp Bá tước Almaviva tiếp cận Rosine chủ yếu bằng phẩm chất nào?", ["Sự nhanh trí và khả năng ứng biến", "Sức mạnh phi thường", "Kiến thức y khoa", "Quyền lực của một vị thẩm phán"], 0),
+        q("Trong vở kịch, Bartolo muốn làm gì với Rosine?", ["Cưới nàng", "Đưa nàng đi du học", "Giới thiệu nàng với Figaro", "Thuê nàng làm thợ cạo"], 0),
+        q("Almaviva thường dùng cách nào để tiếp cận Rosine mà không bị nhận ra ngay?", ["Cải trang", "Giả làm bác sĩ của Bartolo", "Đóng vai người đưa thư", "Trốn trong một bức tranh"], 0),
+        q("Rosine được khắc họa là người có khả năng gì trong việc ứng phó với hoàn cảnh?", ["Chủ động và khéo léo", "Không thể giao tiếp với ai", "Chỉ xuất hiện trong lời kể", "Luôn nhờ Bartolo quyết định thay"], 0),
+        q("Mối quan hệ giữa Figaro và Almaviva trong cuộc mưu tính là gì?", ["Figaro giúp Almaviva thực hiện kế hoạch", "Almaviva là người hầu của Figaro", "Hai người là cha con", "Figaro là giám hộ của Rosine"], 0),
+        q("Việc nhân vật cải trang trong một vở hài thường tạo điều kiện cho điều gì?", ["Những cuộc gặp gỡ và tình huống bất ngờ", "Việc loại bỏ toàn bộ xung đột", "Sự biến mất của lời thoại", "Việc chuyển vở kịch thành truyện kể"], 0),
+        q("Khi khán giả nhận ra thân phận thật của người cải trang trước một nhân vật khác, tình huống nào có thể xuất hiện?", ["Hài kịch trớ trêu", "Độc thoại trữ tình", "Tả cảnh thiên nhiên", "Hồi ký nhân vật"], 0),
+        q("Lời thoại nhanh và linh hoạt của Figaro góp phần thể hiện điều gì?", ["Sự lanh lợi của nhân vật", "Sự thiếu liên hệ giữa các cảnh", "Việc nhân vật không tham gia hành động", "Sự thay đổi người kể chuyện"], 0),
+        q("Trong một cảnh đối thoại, việc nhân vật trả lời bằng một kế hoạch bất ngờ có thể làm tăng yếu tố nào?", ["Sự hồi hộp và bất ngờ", "Tính chất của lời tựa", "Độ dài của phần chú giải", "Sự tĩnh lặng của cảnh trí"], 0),
+        q("Mâu thuẫn giữa Bartolo và những người muốn giúp Rosine chủ yếu thúc đẩy điều gì?", ["Diễn biến hành động của vở kịch", "Phần giới thiệu tác giả", "Việc chuyển thể thành thơ", "Danh sách nhân vật phụ"], 0),
+        q("Một dấu hiệu cho thấy Figaro là nhân vật tháo vát là gì?", ["Anh tìm cách xoay xở khi kế hoạch gặp trở ngại", "Anh luôn từ chối tham gia mọi việc", "Anh chỉ xuất hiện trong lời dẫn", "Anh không trò chuyện với nhân vật nào"], 0),
+        q("Trong hài kịch, một kế hoạch có nhiều bước dễ tạo ra điều gì khi một bước bị trục trặc?", ["Rắc rối mới và cơ hội gây cười", "Sự kết thúc ngay lập tức của mọi cảnh", "Việc loại bỏ các nhân vật chính", "Một đoạn miêu tả phong cảnh"], 0),
+        q("Nếu một nhân vật tự tin rằng kế hoạch của mình không thể thất bại, điều gì thường khiến cảnh diễn hấp dẫn?", ["Khán giả chờ xem kế hoạch có gặp biến cố hay không", "Khán giả đã biết vở kịch không có xung đột", "Nhân vật không cần hành động nữa", "Mọi lời thoại được thay bằng lời bình"], 0)
+      ]
+    };
+
+    for (const chapter of chapters) {
+      for (const author of chapter.authors) {
+        const extraQuestions = additionalQuestionsByAuthor[author.name];
+        if (!Array.isArray(extraQuestions) || extraQuestions.length !== 15) {
+          throw new Error(`Màn ${author.name} cần đúng 15 câu hỏi dự phòng.`);
+        }
+        author.questions.push(...extraQuestions);
+      }
+    }
+
+    function saveActiveQuizProgress() {
+      if (activeIndex === null) return;
+      progress.quizProgress[activeIndex] = {
+        questionIndices: [...activeQuestionIndices],
+        questionIndex,
+        correctCount,
+        scoringAttempt: isScoringAttempt,
+        lockedAnswer,
+        selectedAnswer
+      };
+      saveProgress();
+    }
+
+    const allAuthors = chapters.flatMap(chapter => chapter.authors.map(author => ({ ...author, chapter })));
+    const total = allAuthors.length;
+    const questionsPerLevel = 20;
+    const questionsPerAttempt = 5;
+    const shopGifts = [
+      { name: "Quà thứ nhất", cost: 100, icon: "🎁" },
+      { name: "Quà thứ hai", cost: 300, icon: "🎀" }
+    ];
+    if (allAuthors.some(author => author.questions.length !== questionsPerLevel)) {
+      throw new Error(`Mỗi màn phải có đúng ${questionsPerLevel} câu hỏi.`);
+    }
+    const storageKey = "van-chuong-phieu-luu-ky-kntt-progress-v1";
+    let progress = loadProgress();
+    let activeIndex = null;
+    let questionIndex = 0;
+    let activeQuestionIndices = [];
+    let isScoringAttempt = false;
+    let correctCount = 0;
+    let lockedAnswer = false;
+    let selectedAnswer = null;
+    let diceRoundResolved = false;
+    let diceDragCleanup = null;
+    let heartbeatAudio = null;
+    let toastTimer;
+
+    function loadProgress(savedState = undefined) {
+      try {
+        const saved = JSON.parse(savedState === undefined ? localStorage.getItem(storageKey) || "{}" : savedState || "{}");
+        const completed = [...new Set(Array.isArray(saved.completed) ? saved.completed.filter(n => Number.isInteger(n) && n >= 0 && n < total) : [])];
+        const scores = Array(total).fill(null);
+        if (Array.isArray(saved.scores)) {
+          saved.scores.forEach((score, index) => {
+            if (index < total && Number.isInteger(score) && score >= 0 && score <= 5) scores[index] = score;
+          });
+        }
+        const previousPoolSize = Number.isInteger(saved.questionPoolSize) &&
+          saved.questionPoolSize > 0 &&
+          saved.questionPoolSize < questionsPerLevel
+          ? saved.questionPoolSize
+          : 5;
+        const savedQuestionIds = Array.isArray(saved.answeredQuestions)
+          ? saved.answeredQuestions.filter(id => Number.isInteger(id) && id >= 0)
+          : [];
+        const answeredQuestions = [...new Set(savedQuestionIds
+          .filter(id => id < total * (saved.questionPoolSize === questionsPerLevel ? questionsPerLevel : previousPoolSize))
+          .map(id => saved.questionPoolSize === questionsPerLevel
+            ? id
+            : Math.floor(id / previousPoolSize) * questionsPerLevel + id % previousPoolSize))];
+        const firstAttemptQuestionIds = Array(total).fill(null);
+        if (Array.isArray(saved.firstAttemptQuestionIds)) {
+          saved.firstAttemptQuestionIds.forEach((questionIds, index) => {
+            if (index < total && Array.isArray(questionIds)) {
+              firstAttemptQuestionIds[index] = [...new Set(questionIds
+                .filter(id => Number.isInteger(id) && id >= 0 && id < questionsPerLevel))]
+                .slice(0, questionsPerAttempt);
+            }
+          });
+        } else {
+          for (let index = 0; index < total; index++) {
+            if (completed.includes(index) || answeredQuestions.some(id => Math.floor(id / questionsPerLevel) === index)) {
+              firstAttemptQuestionIds[index] = [];
+            }
+          }
+        }
+        const quizProgress = Array(total).fill(null);
+        if (Array.isArray(saved.quizProgress)) {
+          saved.quizProgress.forEach((attempt, index) => {
+            if (
+              index >= total ||
+              completed.includes(index) ||
+              !attempt ||
+              !Array.isArray(attempt.questionIndices) ||
+              attempt.questionIndices.length !== questionsPerAttempt ||
+              attempt.questionIndices.some(id => !Number.isInteger(id) || id < 0 || id >= allAuthors[index].questions.length) ||
+              new Set(attempt.questionIndices).size !== questionsPerAttempt ||
+              !Number.isInteger(attempt.questionIndex) ||
+              attempt.questionIndex < 0 ||
+              attempt.questionIndex >= questionsPerAttempt ||
+              !Number.isInteger(attempt.correctCount) ||
+              attempt.correctCount < 0 ||
+              attempt.correctCount > questionsPerAttempt ||
+              typeof attempt.scoringAttempt !== "boolean" ||
+              (attempt.scoringAttempt &&
+                (!Array.isArray(firstAttemptQuestionIds[index]) ||
+                  firstAttemptQuestionIds[index].length !== questionsPerAttempt ||
+                  firstAttemptQuestionIds[index].some((id, questionIndex) => id !== attempt.questionIndices[questionIndex]))) ||
+              typeof attempt.lockedAnswer !== "boolean" ||
+              (attempt.lockedAnswer
+                ? !Number.isInteger(attempt.selectedAnswer) || attempt.selectedAnswer < 0 || attempt.selectedAnswer >= 4
+                : attempt.selectedAnswer !== null)
+            ) {
+              return;
+            }
+            quizProgress[index] = {
+              questionIndices: [...attempt.questionIndices],
+              questionIndex: attempt.questionIndex,
+              correctCount: attempt.correctCount,
+              scoringAttempt: attempt.scoringAttempt,
+              lockedAnswer: attempt.lockedAnswer,
+              selectedAnswer: attempt.selectedAnswer
+            };
+          });
+        }
+        for (let index = 0; index < total; index++) {
+          const firstAttempt = firstAttemptQuestionIds[index];
+          if (quizProgress[index] || completed.includes(index) || !Array.isArray(firstAttempt) || firstAttempt.length !== questionsPerAttempt) {
+            continue;
+          }
+          const answeredPositions = firstAttempt
+            .map((questionId, position) => answeredQuestions.includes(index * questionsPerLevel + questionId) ? position : -1)
+            .filter(position => position >= 0);
+          const lastAnsweredPosition = answeredPositions.length ? Math.max(...answeredPositions) : -1;
+          const questionIndex = lastAnsweredPosition === questionsPerAttempt - 1
+            ? questionsPerAttempt - 1
+            : lastAnsweredPosition + 1;
+          const finishedLastQuestion = lastAnsweredPosition === questionsPerAttempt - 1;
+          quizProgress[index] = {
+            questionIndices: [...firstAttempt],
+            questionIndex,
+            correctCount: answeredPositions.length,
+            scoringAttempt: true,
+            lockedAnswer: finishedLastQuestion,
+            selectedAnswer: finishedLastQuestion
+              ? allAuthors[index].questions[firstAttempt[questionIndex]][2]
+              : null
+          };
+        }
+        const chapterRewards = [];
+        if (Array.isArray(saved.chapterRewards)) {
+          saved.chapterRewards.forEach(reward => {
+            if (
+              reward &&
+              Number.isInteger(reward.chapterNumber) &&
+              reward.chapterNumber >= 1 &&
+              reward.chapterNumber <= chapters.length &&
+              Number.isInteger(reward.stars) &&
+              reward.stars >= 0 &&
+              reward.stars <= getChapterMaximumStars(reward.chapterNumber) &&
+              reward.points === getRewardPoints(reward.stars, getChapterMaximumStars(reward.chapterNumber)) &&
+              !chapterRewards.some(savedReward => savedReward.chapterNumber === reward.chapterNumber)
+            ) {
+              chapterRewards.push({
+                chapterNumber: reward.chapterNumber,
+                stars: reward.stars,
+                points: reward.points
+              });
+            }
+          });
+        }
+        const legacyRewardPoints = Number.isInteger(saved.legacyRewardPoints) && saved.legacyRewardPoints >= 0
+          ? saved.legacyRewardPoints
+          : Array.isArray(saved.levelRewards)
+            ? saved.levelRewards.reduce((sum, reward) =>
+              sum + (reward && Number.isInteger(reward.points) && [1, 3, 5].includes(reward.points) ? reward.points : 0), 0)
+            : 0;
+        const savedMapCompletionRewardPoints = [0, 20, 50].includes(saved.mapCompletionRewardPoints)
+          ? saved.mapCompletionRewardPoints
+          : 0;
+        const mapCompletionRewardPoints = completed.length === total
+          ? Math.max(savedMapCompletionRewardPoints, scores.every(score => score === 5) ? 50 : 20)
+          : 0;
+        const gameNetPoints = Number.isSafeInteger(saved.gameNetPoints) ? saved.gameNetPoints : 0;
+        const savedDiceResult = saved.pendingDiceResult;
+        let pendingDiceResult = null;
+        if (
+          savedDiceResult &&
+          Array.isArray(savedDiceResult.dice) &&
+          savedDiceResult.dice.length === 3 &&
+          savedDiceResult.dice.every(value => Number.isInteger(value) && value >= 1 && value <= 6) &&
+          Number.isSafeInteger(savedDiceResult.stake) &&
+          savedDiceResult.stake > 0 &&
+          ["tai", "xiu"].includes(savedDiceResult.guess)
+        ) {
+          const dice = [...savedDiceResult.dice];
+          const diceTotal = dice.reduce((sum, value) => sum + value, 0);
+          const triple = dice.every(value => value === dice[0]);
+          const won = !triple && ((diceTotal >= 11 ? "tai" : "xiu") === savedDiceResult.guess);
+          if (savedDiceResult.total === diceTotal && savedDiceResult.triple === triple && savedDiceResult.won === won) {
+            pendingDiceResult = {
+              dice,
+              total: diceTotal,
+              triple,
+              guess: savedDiceResult.guess,
+              stake: savedDiceResult.stake,
+              won
+            };
+          }
+        }
+        const shopSpentPoints = Number.isSafeInteger(saved.shopSpentPoints) && saved.shopSpentPoints >= 0
+          ? saved.shopSpentPoints
+          : 0;
+        const shopRedemptions = shopGifts.map((_, index) => {
+          const count = Array.isArray(saved.shopRedemptions) ? saved.shopRedemptions[index] : 0;
+          return Number.isSafeInteger(count) && count >= 0 ? Math.min(count, 1000000) : 0;
+        });
+        return { completed, scores, answeredQuestions, firstAttemptQuestionIds, quizProgress, chapterRewards, legacyRewardPoints, mapCompletionRewardPoints, gameNetPoints, pendingDiceResult, shopSpentPoints, shopRedemptions, questionPoolSize: questionsPerLevel };
+      } catch (error) {
+        console.warn("Không thể đọc tiến độ đã lưu.", error);
+        return { completed: [], scores: Array(total).fill(null), answeredQuestions: [], firstAttemptQuestionIds: Array(total).fill(null), quizProgress: Array(total).fill(null), chapterRewards: [], legacyRewardPoints: 0, mapCompletionRewardPoints: 0, gameNetPoints: 0, pendingDiceResult: null, shopSpentPoints: 0, shopRedemptions: Array(shopGifts.length).fill(0), questionPoolSize: questionsPerLevel };
+      }
+    }
+
+    function getChapterMaximumStars(chapterNumber) {
+      return allAuthors.filter(author => author.chapter.number === chapterNumber).length * questionsPerAttempt;
+    }
+
+    function getChapterStars(chapterNumber) {
+      return allAuthors.reduce((sum, author, index) => {
+        if (author.chapter.number !== chapterNumber) return sum;
+        return sum + (progress.scores[index] === null ? 0 : progress.scores[index]);
+      }, 0);
+    }
+
+    function getRewardPoints(stars, maximumStars) {
+      if (stars === maximumStars) return 5;
+      if (stars >= maximumStars / 2) return 3;
+      return 1;
+    }
+
+    function getTotalPoints() {
+      const rewardPoints = progress.chapterRewards.reduce((sum, reward) => sum + reward.points, progress.legacyRewardPoints);
+      const reservedBet = progress.pendingDiceResult ? progress.pendingDiceResult.stake : 0;
+      return Math.max(0, progress.answeredQuestions.length + rewardPoints + progress.mapCompletionRewardPoints + progress.gameNetPoints - progress.shopSpentPoints - reservedBet);
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(progress));
+      } catch (error) {
+        console.warn("Không thể lưu tiến độ.", error);
+        showToast("Không lưu được tiến độ trên thiết bị này.");
+      }
+    }
+
+    function initials(name) {
+      const parts = name.replace(/[()]/g, "").trim().split(/\s+/).filter(Boolean);
+      return (parts.length > 1 ? parts[0][0] + parts[parts.length - 1][0] : name.slice(0, 2)).toUpperCase();
+    }
+
+    function renderMap() {
+      const map = document.getElementById("map");
+      map.innerHTML = chapters.map(chapter => `
+        <section class="zone" aria-labelledby="chapter-${chapter.number}">
+          <header class="zone-heading">
+            <span class="zone-number">B${chapter.number}</span>
+            <div><h2 id="chapter-${chapter.number}">${chapter.title}</h2><p>${chapter.subtitle}</p></div>
+          </header>
+          <div class="island-row">
+            ${chapter.authors.map(author => {
+              const index = allAuthors.findIndex(item => item.name === author.name);
+              const complete = progress.completed.includes(index);
+              const unlocked = index === 0 || progress.completed.includes(index - 1);
+              const source = portrait[author.name];
+              const bestScore = progress.scores[index] || 0;
+              return `<div class="island-wrap">
+                <button class="island ${complete ? "completed" : ""} ${unlocked ? "" : "locked"}" type="button" data-index="${index}" ${unlocked ? "" : 'aria-label="' + author.name + ', đang bị khóa"'} ${unlocked ? "" : 'aria-disabled="true"'}>
+                  <span class="portrait-frame">
+                    ${source
+                      ? `<img class="portrait" src="${source}" alt="${portraitAlt[author.name] || `Ảnh ${author.name}`}" loading="lazy" onerror="this.outerHTML='<span class=&quot;portrait-fallback&quot; aria-hidden=&quot;true&quot;>${initials(author.name)}</span>'">`
+                      : `<span class="portrait-fallback" role="img" aria-label="Minh họa ${author.name}">${initials(author.name)}</span>`}
+                  </span>
+                  <span class="island-land">
+                    <span class="level-label">MÀN ${String(index + 1).padStart(2, "0")} ${complete ? "✓" : ""}</span>
+                    <span class="author-name">${author.name}</span>
+                    <span class="author-work">${author.work}</span>
+                    <span class="question-stars" role="img" aria-label="Điểm cao nhất ${bestScore}/5 câu">${Array.from({ length: questionsPerAttempt }, (_, questionIndex) => `<span class="${questionIndex < bestScore ? "earned" : ""}" aria-hidden="true">★</span>`).join("")}</span>
+                    <span class="author-score">${progress.scores[index] === null ? "Chưa hoàn thành" : `Điểm cao nhất ${bestScore}/5 câu`}</span>
+                  </span>
+                  ${unlocked ? "" : '<span class="lock-badge" aria-hidden="true">🔒</span>'}
+                </button>
+              </div>`;
+            }).join("")}
+          </div>
+        </section>`).join("") + `
+        <div class="legend" aria-label="Chú giải bản đồ">
+          <span><i>🟢</i> Đã chinh phục</span>
+          <span><i>🔓</i> Màn đang mở</span>
+          <span><i>🔒</i> Hoàn thành màn trước để mở</span>
+        </div>
+        `;
+      map.querySelectorAll(".island").forEach(button => {
+        button.addEventListener("click", () => {
+          const index = Number(button.dataset.index);
+          const unlocked = index === 0 || progress.completed.includes(index - 1);
+          if (!unlocked) {
+            showToast("Hãy hoàn thành màn trước để mở khóa hòn đảo này nhé!");
+            return;
+          }
+          openQuiz(index);
+        });
+      });
+      updateStats();
+    }
+
+    function updateStats() {
+      const completeCount = progress.completed.length;
+      const unlockedCount = Math.min(total, completeCount + 1);
+      document.getElementById("score-count").textContent = progress.answeredQuestions.length;
+      document.getElementById("score-total").textContent = total * questionsPerLevel;
+      document.getElementById("coin-count").textContent = getTotalPoints();
+      document.getElementById("unlocked-count").textContent = unlockedCount;
+      document.getElementById("complete-count").textContent = completeCount;
+      document.getElementById("total-count").textContent = total;
+      document.getElementById("overall-progress").style.width = `${completeCount / total * 100}%`;
+    }
+
+    function openQuiz(index) {
+      activeIndex = index;
+      const savedAttempt = progress.quizProgress[index];
+      if (savedAttempt) {
+        questionIndex = savedAttempt.questionIndex;
+        activeQuestionIndices = [...savedAttempt.questionIndices];
+        isScoringAttempt = savedAttempt.scoringAttempt;
+        correctCount = savedAttempt.correctCount;
+        lockedAnswer = savedAttempt.lockedAnswer;
+        selectedAnswer = savedAttempt.selectedAnswer;
+      } else {
+        questionIndex = 0;
+        activeQuestionIndices = sampleQuestionIndices(allAuthors[index].questions.length);
+        isScoringAttempt = progress.firstAttemptQuestionIds[index] === null;
+        if (isScoringAttempt) {
+          progress.firstAttemptQuestionIds[index] = [...activeQuestionIndices];
+        }
+        correctCount = 0;
+        lockedAnswer = false;
+        selectedAnswer = null;
+      }
+      saveActiveQuizProgress();
+      document.getElementById("modal").classList.add("open");
+      document.body.style.overflow = "hidden";
+      renderQuestion();
+      document.getElementById("modal").querySelector(".close").focus();
+    }
+
+    function openTaiXiuGame() {
+      document.getElementById("modal").classList.add("open");
+      document.body.style.overflow = "hidden";
+      renderTaiXiuGame(progress.pendingDiceResult ? { ...progress.pendingDiceResult, animate: false } : null);
+      document.getElementById("quiz-panel").querySelector(".close").focus();
+    }
+
+    function renderDie(value) {
+      if (!Number.isInteger(value) || value < 1 || value > 6) {
+        return '<span class="die die-unknown" aria-hidden="true">?</span>';
+      }
+      const activePipsByValue = {
+        1: [4],
+        2: [0, 8],
+        3: [0, 4, 8],
+        4: [0, 2, 6, 8],
+        5: [0, 2, 4, 6, 8],
+        6: [0, 3, 6, 2, 5, 8]
+      };
+      return `<span class="die" aria-hidden="true">${Array.from({ length: 9 }, (_, index) =>
+        `<span class="die-pip ${activePipsByValue[value].includes(index) ? "active" : ""}"></span>`
+      ).join("")}</span>`;
+    }
+
+    function renderTaiXiuGame(result = null) {
+      cancelDiceDrag();
+      diceRoundResolved = Boolean(result);
+      const balance = getTotalPoints();
+      const panel = document.getElementById("quiz-panel");
+      const revealed = Boolean(result && result.revealed);
+      const covered = Boolean(result && !revealed);
+      const animateDice = Boolean(result && result.animate && !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      const diceFaces = result ? result.dice : ["?", "?", "?"];
+      const resultText = revealed
+        ? result.triple
+          ? `Ra bộ ba đồng số, tổng ${result.total}. Theo luật Tài/Xỉu, bộ ba không thắng cược; em mất ${result.stake} điểm.`
+          : `Tổng ${result.total} là ${result.total >= 11 ? "Tài" : "Xỉu"}. ${result.won
+            ? `Chính xác! Em nhận tổng cộng ${result.stake * 2} điểm, gấp đôi mức cược.`
+            : `Chưa chính xác. Em mất ${result.stake} điểm đã cược.`}`
+        : balance === 0
+          ? "Kho điểm đang bằng 0. Hãy hoàn thành câu hỏi để kiếm điểm trước nhé."
+          : "";
+      panel.innerHTML = `
+        <button class="shop-open" id="open-shop" type="button" aria-label="Mở cửa hàng đổi điểm lấy quà">
+          <span class="shop-open-icon" aria-hidden="true">🛍️</span>
+          <span class="shop-open-copy"><strong>CỬA HÀNG</strong><small>Đổi điểm lấy quà</small></span>
+        </button>
+        <button class="close" type="button" aria-label="Đóng trò chơi">×</button>
+        <div class="game-content">
+          <h2 id="quiz-title">Mẹo kiếm thêm điểm</h2>
+          <div class="dice-balance">Kho điểm hiện có: <span>${balance}</span></div>
+          <label class="bet-label" for="bet-amount">Số điểm muốn cược</label>
+          <input class="bet-input" id="bet-amount" type="number" min="1" max="${balance}" step="1" value="${balance > 0 ? 1 : ""}" ${balance === 0 || result ? "disabled" : ""}>
+          <div class="dice-options">
+            <button class="dice-choice" type="button" data-side="tai" ${balance === 0 || result ? "disabled" : ""}>Tài <small>11–17</small></button>
+            <button class="dice-choice" type="button" data-side="xiu" ${balance === 0 || result ? "disabled" : ""}>Xỉu <small>4–10</small></button>
+          </div>
+          <div class="dice-stage ${covered ? "covered" : ""} ${animateDice ? "rolling" : ""}">
+            <div class="dice-tray ${animateDice ? "rolling" : ""}" role="img" aria-hidden="${covered}" aria-label="${result ? `Kết quả ba xúc xắc: ${result.dice.join(", ")}` : "Ba xúc xắc chờ gieo"}">
+              ${diceFaces.map(renderDie).join("")}
+            </div>
+            ${covered ? `<button class="dice-cover" id="reveal-dice" type="button" aria-label="Giữ và kéo bát ra khỏi ba xúc xắc" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight" ${animateDice ? "disabled" : ""}>
+              <img class="dice-bowl" src="bat-tai-xiu.png" alt="" draggable="false">
+            </button>` : ""}
+          </div>
+          ${revealed ? `<p class="dice-total">Tổng ba xúc xắc: ${result.total}</p>` : ""}
+          ${resultText ? `<p class="feedback ${revealed ? result.won ? "good" : "bad" : ""}" id="dice-feedback" aria-live="polite">${resultText}</p>` : ""}
+          <div class="quiz-actions">${revealed ? '<button class="primary" id="play-again" type="button">Chơi ván tiếp</button>' : ""}</div>
+        </div>`;
+
+      panel.querySelector(".close").addEventListener("click", closeQuiz);
+      panel.querySelector("#open-shop").addEventListener("click", renderShop);
+      if (revealed) {
+        const playAgain = panel.querySelector("#play-again");
+        playAgain.addEventListener("click", () => renderTaiXiuGame());
+        playAgain.focus();
+      } else if (result) {
+        const cover = panel.querySelector("#reveal-dice");
+        const stage = panel.querySelector(".dice-stage");
+        enableBowlDragging(stage, cover);
+        if (animateDice) {
+          window.setTimeout(() => {
+            if (!cover.isConnected) return;
+            cover.disabled = false;
+            cover.focus();
+          }, 2100);
+        } else {
+          cover.focus();
+        }
+      } else {
+        panel.querySelectorAll(".dice-choice").forEach(button => {
+          button.addEventListener("click", () => placeTaiXiuBet(button.dataset.side));
+        });
+      }
+    }
+
+    function renderShop() {
+      stopHeartbeatSound();
+      cancelDiceDrag();
+      const balance = getTotalPoints();
+      const panel = document.getElementById("quiz-panel");
+      panel.innerHTML = `
+        <button class="shop-back" id="shop-back" type="button" aria-label="Quay lại mẹo kiếm thêm điểm">←</button>
+        <button class="close" type="button" aria-label="Đóng cửa hàng">×</button>
+        <div class="game-content">
+          <p class="quiz-kicker">Cửa hàng điểm thưởng</p>
+          <h2 id="quiz-title">Đổi điểm lấy quà</h2>
+          <p class="game-rules">Mỗi lần đổi sẽ trừ điểm tương ứng. Có thể đổi nhiều lần nếu còn đủ điểm.</p>
+          <div class="dice-balance shop-balance">
+            <span>Điểm hiện có</span>
+            <strong><span>${balance}</span><small>điểm</small></strong>
+          </div>
+          <div class="shop-items">
+            ${shopGifts.map((gift, index) => `
+              <article class="shop-item">
+                <span class="shop-gift-icon" aria-hidden="true">${gift.icon}</span>
+                <div class="shop-item-details">
+                  <h3>${gift.name}</h3>
+                  <p class="shop-price"><strong>${gift.cost}</strong><span>điểm</span></p>
+                  <p class="shop-status ${balance >= gift.cost ? "ready" : "short"}" role="status">${balance >= gift.cost ? "✓ Đủ điểm để đổi" : `Thiếu ${gift.cost - balance} điểm`}</p>
+                  <p class="shop-redemptions">Đã đổi ${progress.shopRedemptions[index]} lần</p>
+                </div>
+                <button class="primary" type="button" data-shop-index="${index}" ${balance < gift.cost ? "disabled" : ""}>${balance >= gift.cost ? "Đổi quà" : `Cần thêm ${gift.cost - balance} điểm`}</button>
+              </article>`).join("")}
+          </div>
+        </div>`;
+
+      panel.querySelector(".close").addEventListener("click", closeQuiz);
+      panel.querySelector("#shop-back").addEventListener("click", () => {
+        renderTaiXiuGame(progress.pendingDiceResult ? { ...progress.pendingDiceResult, animate: false } : null);
+      });
+      panel.querySelectorAll("[data-shop-index]").forEach(button => {
+        button.addEventListener("click", () => redeemShopGift(Number(button.dataset.shopIndex)));
+      });
+      panel.querySelector("#shop-back").focus();
+    }
+
+    function redeemShopGift(index) {
+      const gift = shopGifts[index];
+      if (!gift) {
+        showToast("Không tìm thấy phần quà này.");
+        return;
+      }
+      if (getTotalPoints() < gift.cost) {
+        showToast(`Cần ${gift.cost} điểm để đổi ${gift.name}.`);
+        return;
+      }
+      progress.shopSpentPoints += gift.cost;
+      progress.shopRedemptions[index] += 1;
+      saveProgress();
+      updateStats();
+      renderShop();
+    }
+
+    function enableBowlDragging(stage, bowl) {
+      let pointerId = null;
+      let pointerMetrics = null;
+      let pointerOffsetX = 0;
+      let pointerOffsetY = 0;
+      let didDrag = false;
+      const dice = [...stage.querySelectorAll(".die")];
+
+      const getMetrics = () => {
+        const stageRect = stage.getBoundingClientRect();
+        const bowlRect = bowl.getBoundingClientRect();
+        const diceRects = dice.map(die => die.getBoundingClientRect());
+        return { stageRect, bowlRect, diceRects };
+      };
+
+      const moveBowl = (left, top, metrics) => {
+        const { stageRect, bowlRect, diceRects } = metrics;
+        bowl.style.setProperty("--drag-x", `${left - stageRect.width / 2}px`);
+        bowl.style.setProperty("--drag-y", `${top - stageRect.height / 2}px`);
+        const bowlLeft = stageRect.left + left - bowlRect.width / 2;
+        const bowlTop = stageRect.top + top - bowlRect.height / 2;
+        if (diceRects.length === 3 && diceRects.every(dieRect => {
+          return dieRect.right <= bowlLeft ||
+            dieRect.left >= bowlLeft + bowlRect.width ||
+            dieRect.bottom <= bowlTop ||
+            dieRect.top >= bowlTop + bowlRect.height;
+        })) {
+          revealDiceResult();
+          return true;
+        }
+        return false;
+      };
+
+      const stopDragging = () => {
+        if (pointerId === null) {
+          bowl.classList.remove("dragging");
+          return;
+        }
+        const capturedPointerId = pointerId;
+        pointerId = null;
+        pointerMetrics = null;
+        bowl.classList.remove("dragging");
+        if (bowl.hasPointerCapture(capturedPointerId)) bowl.releasePointerCapture(capturedPointerId);
+      };
+
+      diceDragCleanup = stopDragging;
+      bowl.addEventListener("pointerdown", event => {
+        if (pointerId !== null || event.button !== 0) return;
+        event.preventDefault();
+        pointerId = event.pointerId;
+        didDrag = false;
+        pointerMetrics = getMetrics();
+        const { stageRect, bowlRect } = pointerMetrics;
+        pointerOffsetX = event.clientX - (bowlRect.left + bowlRect.width / 2);
+        pointerOffsetY = event.clientY - (bowlRect.top + bowlRect.height / 2);
+        bowl.setPointerCapture(pointerId);
+        bowl.classList.add("dragging");
+        bowl.dataset.stageLeft = `${bowlRect.left + bowlRect.width / 2 - stageRect.left}`;
+        bowl.dataset.stageTop = `${bowlRect.top + bowlRect.height / 2 - stageRect.top}`;
+      });
+      bowl.addEventListener("pointermove", event => {
+        if (event.pointerId !== pointerId) return;
+        const { stageRect } = pointerMetrics;
+        const left = event.clientX - stageRect.left - pointerOffsetX;
+        const top = event.clientY - stageRect.top - pointerOffsetY;
+        if (Math.abs(left - Number(bowl.dataset.stageLeft)) > 2 || Math.abs(top - Number(bowl.dataset.stageTop)) > 2) {
+          didDrag = true;
+        }
+        bowl.dataset.stageLeft = `${left}`;
+        bowl.dataset.stageTop = `${top}`;
+        if (moveBowl(left, top, pointerMetrics)) stopDragging();
+      });
+      const finishPointer = event => {
+        if (event.pointerId === pointerId) stopDragging();
+      };
+      bowl.addEventListener("pointerup", finishPointer);
+      bowl.addEventListener("pointercancel", finishPointer);
+      bowl.addEventListener("lostpointercapture", finishPointer);
+      bowl.addEventListener("keydown", event => {
+        const step = 18;
+        const offsets = {
+          ArrowUp: [0, -step],
+          ArrowDown: [0, step],
+          ArrowLeft: [-step, 0],
+          ArrowRight: [step, 0]
+        };
+        const offset = offsets[event.key];
+        if (!offset) return;
+        event.preventDefault();
+        const metrics = getMetrics();
+        const { stageRect, bowlRect } = metrics;
+        const left = bowlRect.left + bowlRect.width / 2 - stageRect.left + offset[0];
+        const top = bowlRect.top + bowlRect.height / 2 - stageRect.top + offset[1];
+        moveBowl(left, top, metrics);
+      });
+      bowl.addEventListener("click", event => {
+        event.preventDefault();
+        if (didDrag) {
+          didDrag = false;
+          return;
+        }
+        showToast("Giữ và kéo bát ra xa để lộ cả ba xúc xắc.");
+      });
+    }
+
+    function revealDiceResult() {
+      cancelDiceDrag();
+      const result = progress.pendingDiceResult;
+      if (!result) {
+        return;
+      }
+      progress.gameNetPoints += result.won ? result.stake : -result.stake;
+      progress.pendingDiceResult = null;
+      saveProgress();
+      updateStats();
+      renderTaiXiuGame({ ...result, revealed: true });
+    }
+
+    function cancelDiceDrag() {
+      if (!diceDragCleanup) return;
+      const cleanup = diceDragCleanup;
+      diceDragCleanup = null;
+      cleanup();
+    }
+
+    function playHeartbeatSound() {
+      if (!heartbeatAudio) {
+        heartbeatAudio = new Audio("Heart_Beat_SOUND_EFFECT.mp3");
+        heartbeatAudio.loop = true;
+        heartbeatAudio.volume = .7;
+      }
+      if (!heartbeatAudio.paused) return;
+      heartbeatAudio.play().catch(error => {
+        if (error.name === "AbortError") return;
+        console.error("Unable to play the dice heartbeat audio file.", error);
+        showToast("Không thể phát tệp âm thanh nhịp tim.");
+      });
+    }
+
+    function stopHeartbeatSound() {
+      if (!heartbeatAudio) return;
+      heartbeatAudio.pause();
+      heartbeatAudio.currentTime = 0;
+    }
+
+    function placeTaiXiuBet(guess) {
+      if (diceRoundResolved) return;
+      const stake = document.getElementById("bet-amount").valueAsNumber;
+      const balance = getTotalPoints();
+      if (!["tai", "xiu"].includes(guess)) {
+        showToast("Hãy chọn Tài hoặc Xỉu.");
+        return;
+      }
+      if (!Number.isSafeInteger(stake) || stake < 1 || stake > balance) {
+        showToast(`Nhập số điểm cược từ 1 đến ${balance}.`);
+        return;
+      }
+      const dice = Array.from({ length: 3 }, () => Math.floor(Math.random() * 6) + 1);
+      const total = dice.reduce((sum, value) => sum + value, 0);
+      const triple = dice.every(value => value === dice[0]);
+      const won = !triple && ((total >= 11 ? "tai" : "xiu") === guess);
+      const result = { dice, total, triple, guess, stake, won };
+      diceRoundResolved = true;
+      progress.pendingDiceResult = result;
+      saveProgress();
+      updateStats();
+      playHeartbeatSound();
+      renderTaiXiuGame({ ...result, animate: true });
+    }
+
+    function renderQuestion() {
+      const { name, work, questions, chapter } = allAuthors[activeIndex];
+      const question = questions[activeQuestionIndices[questionIndex]];
+      const answeredCorrectly = lockedAnswer && selectedAnswer === question[2];
+      const feedbackText = !lockedAnswer
+        ? "Chọn đáp án em cho là đúng."
+        : answeredCorrectly
+          ? "Chính xác! Em đã tìm đúng dấu mốc trên hành trình."
+          : `Chưa chính xác. Đáp án đúng là: ${question[1][question[2]]}\nGiải thích: ${question[3]}`;
+      const panel = document.getElementById("quiz-panel");
+      panel.innerHTML = `
+        <button class="close" type="button" aria-label="Đóng câu hỏi">×</button>
+        <p class="quiz-kicker">Bài ${chapter.number} · Màn ${String(activeIndex + 1).padStart(2, "0")}</p>
+        <h2 id="quiz-title">${name}</h2>
+        <p class="quiz-work">${work}</p>
+        <div class="question-progress"><span>Câu ${questionIndex + 1} / 5</span><span>${questionIndex * 20}%</span></div>
+        <div class="question-track" aria-hidden="true"><div style="width:${questionIndex * 20}%"></div></div>
+        <p class="question-text">${question[0]}</p>
+        <div class="answers" role="group" aria-label="Chọn một đáp án">
+          ${question[1].map((answer, answerIndex) => `<button class="answer ${lockedAnswer && answerIndex === question[2] ? "correct" : ""} ${lockedAnswer && answerIndex === selectedAnswer && !answeredCorrectly ? "wrong" : ""}" type="button" data-answer="${answerIndex}" ${lockedAnswer ? "disabled" : ""}>
+            <span class="answer-letter">${String.fromCharCode(65 + answerIndex)}</span><span>${answer}</span>
+          </button>`).join("")}
+        </div>
+        <p class="feedback ${lockedAnswer ? answeredCorrectly ? "good" : "bad" : ""}" id="feedback" aria-live="polite" style="white-space: pre-line">${feedbackText}</p>
+        <div class="quiz-actions"><button class="primary" id="next-question" type="button" ${lockedAnswer ? "" : "disabled"}>${questionIndex === 4 ? "Hoàn thành màn" : "Câu tiếp theo"} →</button></div>`;
+
+      panel.querySelector(".close").addEventListener("click", closeQuiz);
+      panel.querySelectorAll(".answer").forEach(button => button.addEventListener("click", () => checkAnswer(Number(button.dataset.answer))));
+      panel.querySelector("#next-question").addEventListener("click", advance);
+    }
+
+    function sampleQuestionIndices(poolSize) {
+      const indices = Array.from({ length: poolSize }, (_, index) => index);
+      for (let index = indices.length - 1; index > 0; index--) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [indices[index], indices[randomIndex]] = [indices[randomIndex], indices[index]];
+      }
+      return indices.slice(0, questionsPerAttempt);
+    }
+
+    function checkAnswer(selected) {
+      if (lockedAnswer) return;
+      const questionPoolIndex = activeQuestionIndices[questionIndex];
+      const question = allAuthors[activeIndex].questions[questionPoolIndex];
+      const correct = question[2];
+      const answers = document.querySelectorAll(".answer");
+      const feedback = document.getElementById("feedback");
+      lockedAnswer = true;
+      selectedAnswer = selected;
+      answers.forEach((button, index) => {
+        button.disabled = true;
+        if (index === correct) button.classList.add("correct");
+      });
+      if (selected === correct) {
+        correctCount += 1;
+        const questionId = activeIndex * questionsPerLevel + questionPoolIndex;
+        if (
+          isScoringAttempt &&
+          progress.firstAttemptQuestionIds[activeIndex].includes(questionPoolIndex) &&
+          !progress.answeredQuestions.includes(questionId)
+        ) {
+          progress.answeredQuestions.push(questionId);
+        }
+        feedback.textContent = "Chính xác! Em đã tìm đúng dấu mốc trên hành trình.";
+        feedback.className = "feedback good";
+      } else {
+        answers[selected].classList.add("wrong");
+        feedback.textContent = `Chưa chính xác. Đáp án đúng là: ${question[1][correct]}\nGiải thích: ${question[3]}`;
+        feedback.className = "feedback bad";
+      }
+      document.getElementById("next-question").disabled = false;
+      saveActiveQuizProgress();
+      if (selected === correct && isScoringAttempt) renderMap();
+    }
+
+    function advance() {
+      if (!lockedAnswer) return;
+      if (questionIndex < 4) {
+        questionIndex += 1;
+        lockedAnswer = false;
+        selectedAnswer = null;
+        saveActiveQuizProgress();
+        renderQuestion();
+        return;
+      }
+      const previousBest = progress.scores[activeIndex];
+      if (previousBest === null || correctCount > previousBest) progress.scores[activeIndex] = correctCount;
+      if (!progress.completed.includes(activeIndex)) {
+        progress.completed.push(activeIndex);
+        progress.completed.sort((a, b) => a - b);
+      }
+      progress.quizProgress[activeIndex] = null;
+      let mapCompletionBonus = 0;
+      if (progress.completed.length === total) {
+        const rewardTarget = progress.scores.every(score => score === 5) ? 50 : 20;
+        mapCompletionBonus = Math.max(0, rewardTarget - progress.mapCompletionRewardPoints);
+        if (mapCompletionBonus > 0) progress.mapCompletionRewardPoints = rewardTarget;
+      }
+      const chapterNumber = allAuthors[activeIndex].chapter.number;
+      const chapterIsComplete = !allAuthors[activeIndex + 1] || allAuthors[activeIndex + 1].chapter.number !== chapterNumber;
+      let chapterReward = null;
+      let newChapterReward = false;
+      if (chapterIsComplete) {
+        chapterReward = progress.chapterRewards.find(reward => reward.chapterNumber === chapterNumber) || null;
+        if (!chapterReward) {
+          const stars = getChapterStars(chapterNumber);
+          chapterReward = {
+            chapterNumber,
+            stars,
+            points: getRewardPoints(stars, getChapterMaximumStars(chapterNumber))
+          };
+          progress.chapterRewards.push(chapterReward);
+          newChapterReward = true;
+        }
+      }
+      saveProgress();
+      renderMap();
+      renderFinish(chapterReward, newChapterReward, mapCompletionBonus);
+    }
+
+    function renderFinish(chapterReward, newChapterReward, mapCompletionBonus) {
+      const author = allAuthors[activeIndex];
+      const chapterNumber = author.chapter.number;
+      const lastLevel = activeIndex === total - 1;
+      const mapComplete = progress.completed.length === total;
+      const perfectMap = mapComplete && progress.scores.every(score => score === 5);
+      const bestScore = progress.scores[activeIndex];
+      const totalScore = getTotalPoints();
+      const panel = document.getElementById("quiz-panel");
+      panel.innerHTML = `
+        <button class="close" type="button" aria-label="Đóng">×</button>
+        <div class="finish">
+          <div class="finish-icon" aria-hidden="true">${lastLevel ? "🏆" : "🎉"}</div>
+          <p class="quiz-kicker">${lastLevel ? "Hoàn thành bản đồ" : "Đảo đã chinh phục"}</p>
+          <h2 id="quiz-title">${lastLevel ? "Em đã đi hết hành trình!" : `Gặp xong ${author.name}!`}</h2>
+          <p>Em trả lời đúng <strong>${correctCount}/5</strong> câu trong lượt này. Điểm cao nhất của màn: <strong>${bestScore}/5</strong>.</p>
+          ${chapterReward
+            ? `<div class="reward-card" role="status" aria-live="polite">
+                <h3>🎁 Khen thưởng bài ${chapterReward.chapterNumber}</h3>
+                <div class="reward-stars" role="img" aria-label="${chapterReward.stars} trên ${getChapterMaximumStars(chapterReward.chapterNumber)} sao">${Array.from({ length: getChapterMaximumStars(chapterReward.chapterNumber) }, (_, star) => `<span class="${star < chapterReward.stars ? "earned" : ""}" aria-hidden="true">★</span>`).join("")}</div>
+                <strong class="reward-points">${newChapterReward ? `+${chapterReward.points} điểm` : `+${chapterReward.points} điểm đã nhận`}</strong>
+                <p>${newChapterReward
+                  ? chapterReward.stars === getChapterMaximumStars(chapterReward.chapterNumber)
+                    ? "Đạt tuyệt đối số sao của bài!"
+                    : chapterReward.stars >= getChapterMaximumStars(chapterReward.chapterNumber) / 2
+                      ? "Đạt mức trung bình trở lên — làm tốt lắm!"
+                      : "Điểm thưởng khích lệ cho nỗ lực của em!"
+                  : "Bài này đã nhận thưởng trước đó; chơi lại không cộng thêm điểm thưởng."}</p>
+              </div>`
+            : `<p>Hoàn thành các màn còn lại của Bài ${chapterNumber} để nhận phần thưởng theo tổng số sao.</p>`}
+          ${mapComplete
+            ? `<div class="reward-card" role="status" aria-live="polite">
+                <h3>🏆 Thưởng mở khóa toàn bộ bản đồ</h3>
+                <strong class="reward-points">${mapCompletionBonus > 0 ? `+${mapCompletionBonus} điểm` : `Đã nhận ${progress.mapCompletionRewardPoints} điểm thưởng`}</strong>
+                <p>${perfectMap
+                  ? mapCompletionBonus === 30
+                    ? "Cả 17 tác phẩm đều đạt 5 sao. Thưởng toàn bản đồ được nâng lên tổng cộng 50 điểm."
+                    : `Cả 17 tác phẩm đều đạt 5 sao. Tổng thưởng toàn bản đồ: ${progress.mapCompletionRewardPoints} điểm.`
+                  : `Đã mở khóa đủ 17/17 tác phẩm. Thưởng hoàn thành bản đồ: ${progress.mapCompletionRewardPoints} điểm.`}</p>
+              </div>`
+            : ""}
+          ${lastLevel
+            ? `<p>Kho điểm hiện có: <strong>${totalScore}</strong> điểm, gồm điểm câu hỏi và điểm thưởng.</p>
+              <div class="score-summary"><h3>Điểm từng màn</h3><ul>${allAuthors.map((item, index) => `<li><span>Màn ${String(index + 1).padStart(2, "0")} · ${item.name}</span><strong>${progress.scores[index] === null ? "—" : `${progress.scores[index]}/5`}</strong></li>`).join("")}</ul></div>`
+            : `<p>Màn ${String(Math.min(activeIndex + 2, total)).padStart(2, "0")} đã được mở khóa, dù em có thể trả lời sai một vài câu.</p>`}
+          <div class="quiz-actions" style="justify-content:center"><button class="primary" id="finish-button" type="button">Trở về bản đồ</button></div>
+        </div>`;
+      panel.querySelector(".close").addEventListener("click", closeQuiz);
+      panel.querySelector("#finish-button").addEventListener("click", closeQuiz);
+      panel.querySelector("#finish-button").focus();
+    }
+
+    function closeQuiz() {
+      stopHeartbeatSound();
+      cancelDiceDrag();
+      document.getElementById("modal").classList.remove("open");
+      document.body.style.overflow = "";
+      activeIndex = null;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    document.getElementById("modal").addEventListener("click", event => {
+      if (event.target === event.currentTarget) closeQuiz();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && document.getElementById("modal").classList.contains("open")) closeQuiz();
+    });
+
+    document.getElementById("photo-attribution").innerHTML = `Ghi công ảnh: ${photoAttributions.map(item => {
+      const fileUrl = `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(item.file).replace(/%28/g, "(").replace(/%29/g, ")")}`;
+      return `<a href="${fileUrl}" target="_blank" rel="noopener noreferrer">${item.author} — ảnh ${item.creator}</a> · <a href="${item.licenseUrl}" target="_blank" rel="noopener noreferrer">${item.license}</a>`;
+    }).join(" · ")}`;
+    document.getElementById("open-tai-xiu").addEventListener("click", openTaiXiuGame);
+    renderMap();
+  </script>
+</body>
+</html>
