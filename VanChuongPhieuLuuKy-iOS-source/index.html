@@ -743,6 +743,7 @@
     }
     .die-pip.active { background: #174b69; box-shadow: inset 0 1px 1px rgba(255,255,255,.45); }
     .dice-tray.rolling .die { animation: dice-toss 1s cubic-bezier(.2,.7,.25,1) .8s both; }
+    .dice-tray.rolling .die-pip.active { visibility: hidden; }
     .dice-tray.rolling .die:nth-child(2) { animation-delay: .88s; }
     .dice-tray.rolling .die:nth-child(3) { animation-delay: .96s; }
     @keyframes dice-toss {
@@ -1901,6 +1902,7 @@
         if (animateDice) {
           window.setTimeout(() => {
             if (!cover.isConnected) return;
+            panel.querySelector(".dice-tray").classList.remove("rolling");
             cover.disabled = false;
             cover.focus();
           }, 2100);

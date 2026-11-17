@@ -126,8 +126,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A10000000000000000000004,
 				A10000000000000000000005,
+				A10000000000000000000006,
 				A10000000000000000000007,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,7 +136,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A10000000000000000000003,
+				A10000000000000000000004,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +146,7 @@
 			files = (
 				A10000000000000000000001,
 				A10000000000000000000002,
+				A10000000000000000000003,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

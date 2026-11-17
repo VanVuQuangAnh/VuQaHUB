@@ -2,12 +2,13 @@
 
 ## Upload lên GitHub và chạy Codemagic
 
-Nếu GitHub không tiện tải thư mục lồng nhau:
+Workflow nhận dự án theo một trong các cấu trúc sau:
 
-1. Giải nén `Codemagic-GitHub-upload.zip` trên máy tính.
-2. Tải hai file bên trong lên **gốc repository GitHub**: `codemagic.yaml` và `VanChuongPhieuLuuKy-iOS-source.zip`. Không tải nguyên file upload ZIP lên repository.
-3. Commit và push lên nhánh Codemagic đang theo dõi.
-4. Trong Codemagic, chọn nhánh đó và bấm **Check for configuration files**.
+- Dự án `ios/` trực tiếp ở gốc repository.
+- Toàn bộ dự án nằm trong thư mục `VanChuongPhieuLuuKy-iOS-source/` ở gốc.
+- Hai file `codemagic.yaml` và `VanChuongPhieuLuuKy-iOS-source.zip` cùng nằm ở gốc; workflow sẽ tự giải nén ZIP.
+
+Sau khi cập nhật, commit và push lên nhánh Codemagic theo dõi. Trong Codemagic, chọn nhánh đó và bấm **Check for configuration files**.
 
 - `ios-unsigned` build rồi đóng gói IPA **không ký**; không cần provisioning profile nhưng iPhone không thể cài gói này.
 - `ios-app-store` tạo IPA đã ký để đưa lên App Store Connect/TestFlight; cần cấu hình signing trước.
