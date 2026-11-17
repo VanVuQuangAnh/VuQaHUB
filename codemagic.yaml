@@ -14,6 +14,8 @@ workflows:
           set -eu
           if [ -f "ios/VanChuongPhieuLuuKy.xcodeproj/project.pbxproj" ]; then
             SOURCE_DIR="$PWD"
+          elif [ -f "VanChuongPhieuLuuKy-iOS-source/ios/VanChuongPhieuLuuKy.xcodeproj/project.pbxproj" ]; then
+            SOURCE_DIR="$PWD/VanChuongPhieuLuuKy-iOS-source"
           elif [ -f "VanChuongPhieuLuuKy-iOS-source.zip" ]; then
             SOURCE_DIR="$PWD/codemagic-source"
             mkdir -p "$SOURCE_DIR"
@@ -49,6 +51,7 @@ workflows:
           /usr/bin/unzip -t "$IPA_PATH"
     artifacts:
       - build/ios/VanChuongPhieuLuuKy-unsigned.ipa
+      - VanChuongPhieuLuuKy-iOS-source/build/ios/VanChuongPhieuLuuKy-unsigned.ipa
       - codemagic-source/build/ios/VanChuongPhieuLuuKy-unsigned.ipa
 
   ios-app-store:
@@ -68,6 +71,8 @@ workflows:
         script: |
           if [ -f "ios/VanChuongPhieuLuuKy.xcodeproj/project.pbxproj" ]; then
             SOURCE_DIR="$PWD"
+          elif [ -f "VanChuongPhieuLuuKy-iOS-source/ios/VanChuongPhieuLuuKy.xcodeproj/project.pbxproj" ]; then
+            SOURCE_DIR="$PWD/VanChuongPhieuLuuKy-iOS-source"
           elif [ -f "VanChuongPhieuLuuKy-iOS-source.zip" ]; then
             SOURCE_DIR="$PWD/codemagic-source"
             mkdir -p "$SOURCE_DIR"
@@ -81,5 +86,6 @@ workflows:
           xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
     artifacts:
       - build/ios/ipa/*.ipa
+      - VanChuongPhieuLuuKy-iOS-source/build/ios/ipa/*.ipa
       - codemagic-source/build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
