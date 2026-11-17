@@ -1,4 +1,56 @@
 workflows:
+  ios-unsigned:
+    name: iOS Unsigned IPA (not installable)
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      vars:
+        XCODE_PROJECT: ios/VanChuongPhieuLuuKy.xcodeproj
+        XCODE_SCHEME: VanChuongPhieuLuuKy
+      xcode: latest
+    scripts:
+      - name: Build and package unsigned IPA
+        script: |
+          set -eu
+          if [ -f "ios/VanChuongPhieuLuuKy.xcodeproj/project.pbxproj" ]; then
+            SOURCE_DIR="$PWD"
+          elif [ -f "VanChuongPhieuLuuKy-iOS-source.zip" ]; then
+            SOURCE_DIR="$PWD/codemagic-source"
+            mkdir -p "$SOURCE_DIR"
+            unzip -oq "VanChuongPhieuLuuKy-iOS-source.zip" -d "$SOURCE_DIR"
+          else
+            echo "Missing Xcode project or VanChuongPhieuLuuKy-iOS-source.zip in repository root."
+            exit 1
+          fi
+
+          cd "$SOURCE_DIR"
+          DERIVED_DATA="$SOURCE_DIR/build/ios/DerivedData"
+          APP_PATH="$DERIVED_DATA/Build/Products/Release-iphoneos/VanChuongPhieuLuuKy.app"
+          PACKAGE_DIR="$SOURCE_DIR/build/ios/unsigned-package"
+          IPA_PATH="$SOURCE_DIR/build/ios/VanChuongPhieuLuuKy-unsigned.ipa"
+
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$DERIVED_DATA" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+
+          test -d "$APP_PATH"
+          test ! -d "$APP_PATH/_CodeSignature"
+          mkdir -p "$PACKAGE_DIR/Payload"
+          cp -R "$APP_PATH" "$PACKAGE_DIR/Payload/"
+          (cd "$PACKAGE_DIR" && /usr/bin/zip -qry "$IPA_PATH" Payload)
+          /usr/bin/unzip -t "$IPA_PATH"
+    artifacts:
+      - build/ios/VanChuongPhieuLuuKy-unsigned.ipa
+      - codemagic-source/build/ios/VanChuongPhieuLuuKy-unsigned.ipa
+
   ios-app-store:
     name: iOS App Store IPA
     max_build_duration: 60
@@ -17,7 +69,7 @@ workflows:
           if [ -f "ios/VanChuongPhieuLuuKy.xcodeproj/project.pbxproj" ]; then
             SOURCE_DIR="$PWD"
           elif [ -f "VanChuongPhieuLuuKy-iOS-source.zip" ]; then
-            SOURCE_DIR="$PWD/.codemagic-source"
+            SOURCE_DIR="$PWD/codemagic-source"
             mkdir -p "$SOURCE_DIR"
             unzip -oq "VanChuongPhieuLuuKy-iOS-source.zip" -d "$SOURCE_DIR"
           else
@@ -29,5 +81,5 @@ workflows:
           xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
     artifacts:
       - build/ios/ipa/*.ipa
-      - .codemagic-source/build/ios/ipa/*.ipa
+      - codemagic-source/build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
