@@ -10,4 +10,4 @@
 
 `codemagic.yaml` nằm ở thư mục gốc repository. Đưa cả thư mục `ios`, file YAML, `index.html` và các tài nguyên web lên đúng repository/branch đang kết nối với Codemagic, sau đó chọn **Check for configuration files**.
 
-Workflow `ios-app-store` cần Apple Developer Program và signing identity/profile loại **App Store** đã cấu hình trong Codemagic. Workflow tạo IPA để tải về hoặc đưa lên App Store Connect/TestFlight; IPA App Store không cài trực tiếp bằng ứng dụng Files. Muốn cài thử trên iPhone, dùng Xcode với Development signing hoặc cấu hình Ad Hoc signing và đăng ký thiết bị.
+Workflow `ios-testflight` cần Apple Developer Program và signing identity/profile loại **App Store** đã cấu hình trong Codemagic. Tạo nhóm biến môi trường `app_store_connect_credentials` gồm `APP_STORE_CONNECT_PRIVATE_KEY`, `APP_STORE_CONNECT_KEY_IDENTIFIER` và `APP_STORE_CONNECT_ISSUER_ID` để Codemagic tải build lên TestFlight. Sau khi Apple xử lý/duyệt build, thêm người thử nghiệm hoặc tạo public link trong App Store Connect → **TestFlight**. IPA App Store không cài trực tiếp bằng ứng dụng Files.
